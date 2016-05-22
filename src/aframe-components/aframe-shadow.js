@@ -13,7 +13,7 @@ AFRAME.registerComponent('shadow', {
 
     update: function () {
         const elGeometry = this.el.getComputedAttribute('geometry');
-        this.texture = new THREE.TextureLoader().load('/images/pwbackg.png');
+        this.texture = new THREE.TextureLoader().load('/images/shadow.png');
         const material = new THREE.MeshBasicMaterial({
             map: this.texture,
             transparent: true,
