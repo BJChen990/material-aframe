@@ -1,0 +1,29 @@
+{
+  "name": "react-aframe-raised-button",
+  "version": "1.0.0",
+  "description": "A React component of RaisedButton in Material design based on A-Frame.",
+  "main": "./lib/main.js",
+  "scripts": {
+    "build": "babel --presets es2015,react,stage-0 src -d lib"
+  },
+  "devDependencies": {
+    "babel": "^6.3.13",
+    "babel-cli": "^6.3.15",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13"
+  },
+ "peerDependencies": {
+   "react": "0.14.*",
+   "react-dom": "*"
+ },
+  "keywords": [
+    "aframe",
+    "react",
+    "vr",
+    "material",
+    "design"
+  ],
+  "author": "BJ",
+  "license": "MIT"
+}
