@@ -1,4 +1,4 @@
-require('aframe');
+
 require('./aframe-geometries/rounded-rect');
 require('./aframe-components/aframe-button-text');
 require('./aframe-components/aframe-raised-canvas-texture');
