@@ -37,9 +37,9 @@ export default class ARaisedButton extends React.Component {
         this._hoverColor = `rgb(${r}, ${g}, ${b})`;
 
         if (colorChangeRate > 0) {
-            this._rippleColor = `#333333`;
+            this._rippleColor = '#333333';
         } else {
-            this._rippleColor = `#FFFFFF`;
+            this._rippleColor = '#FFFFFF';
         }
     }
 
