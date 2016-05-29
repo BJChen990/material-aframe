@@ -8,4 +8,7 @@ require('./aframe-components/aframe-svg');
 
 export AFloatingActionButton from './components/AFloatingActionButton.react';
 export ARaisedButton from './components/ARaisedButton.react';
+export AFlatButton from './components/AFlatButton.react';
+export AnIconToggle from './components/AnIconToggle.react';
+
 export ACursor from './components/ACursor.react';

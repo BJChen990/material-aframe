@@ -8,6 +8,7 @@ export default class AbstractFloatingButton extends React.Component {
         colorChangeRate: React.PropTypes.number,
         onClick: React.PropTypes.func
     }
+
     static defaultProps = {
         backgroundColor: '#fafafa',
         colorChangeRate: 1,

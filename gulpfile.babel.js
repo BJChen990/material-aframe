@@ -9,6 +9,10 @@ const paths = {
 gulp.task('build', () => {
     return gulp.src(paths.scripts)
         .pipe(babel())
+        .on('error', function(err) {
+            console.log(err.message);
+            this.emit('end');
+        })
         .pipe(gulp.dest(paths.build));
 });
 

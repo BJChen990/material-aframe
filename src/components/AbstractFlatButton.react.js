@@ -9,6 +9,12 @@ export default class AbstractFlatButton extends React.Component {
         onClick: React.PropTypes.func
     }
 
+    static defaultProps = {
+        backgroundColor: '#fafafa',
+        colorChangeRate: 1,
+        onClick: null
+    }
+
     componentWillMount() {
         var backgroundColor = new THREE.Color(this.props.backgroundColor);
         var colorChangeRate = this.props.colorChangeRate;
@@ -44,9 +50,9 @@ export default class AbstractFlatButton extends React.Component {
     }
 
     _handleClick = () => {
-        let timer = setTimeout(function () {
+        let timer = setTimeout(() => {
             clearTimeout(timer);
-            timer = setTimeout(function () {
+            timer = setTimeout(() => {
                 clearTimeout(timer);
                 if (this.props.onClick) {
                     this.props.onClick();
