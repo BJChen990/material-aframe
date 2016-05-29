@@ -3,7 +3,7 @@ import TextUtil from '../utils/TextUtil';
 const FONT_SIZE = 48;
 
 
-AFRAME.registerComponent('button-text', {
+window.AFRAME.registerComponent('button-text', {
     schema: {
         fontSize: {
             default: FONT_SIZE

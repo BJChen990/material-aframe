@@ -1,12 +1,13 @@
-const THREE = AFRAME.THREE;
+var AFRAME = window.AFRAME;
+var THREE = AFRAME.THREE;
 
 AFRAME.registerComponent('araisedcanvas', {
     schema: {
-        width: {default: 352},
-        height: {default: 144}
+        width: { default: 352 },
+        height: { default: 144 }
     },
 
-    init: function () {
+    init: function() {
         this.renderer = null;
         this.canvas = null;
         this.ctx = null;
@@ -19,49 +20,63 @@ AFRAME.registerComponent('araisedcanvas', {
         this.renderer = renderer;
     },
 
-    update: function () {
+    update: function() {
         this.createCanvas(this.data.width, this.data.height);
     },
 
-    createCanvas: function (w, h) {
-        this.canvas = document.createElement('canvas');
-        this.canvas.width = w;
-        this.canvas.height = h;
-        this.canvas.style = 'display: none';
-        this.ctx = this.canvas.getContext('2d');
+    createCanvas: function(w, h) {
+        var el = this.el;
+        var canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        canvas.style = 'display: none';
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
 
-        this.texture = new THREE.Texture(this.canvas);
-        const material = new THREE.MeshBasicMaterial({
+        this.texture = new THREE.Texture(canvas);
+        var material = new THREE.MeshBasicMaterial({
             map: this.texture,
             transparent: true,
             opacity: 1
         });
 
-        const elGeometry = this.el.getComputedAttribute('geometry');
-        const geometry = new THREE.PlaneBufferGeometry(elGeometry.width, elGeometry.height);
+        var elGeometry = el.getComputedAttribute('geometry');
+        var geometry = void 0;
 
-        this.mesh = new THREE.Mesh(geometry, material);
-        this.mesh.el = this.el;
-        this.el.object3DMap.mesh.add(this.mesh);
-        this.mesh.position.set(0, 0, 0.01);
-
-        if(!this.el.hasLoaded) {
-            this.el.addEventListener('loaded', this.listeners.elementLoad);
+        switch (elGeometry.primitive) {
+        case 'roundedrect':
+        case 'plane':
+            geometry = new THREE.PlaneBufferGeometry(elGeometry.width, elGeometry.height);
+            break;
+        case 'circle':
+            geometry = new THREE.PlaneBufferGeometry(elGeometry.radius, elGeometry.radius);
+            break;
         }
-        else {
+
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.el = el;
+        el.object3DMap.mesh.add(mesh);
+        mesh.position.set(0, 0, 0.01);
+        this.mesh = mesh;
+
+        if (!el.hasLoaded) {
+            el.addEventListener('loaded', this.listeners.elementLoad);
+        } else {
             this.render();
         }
     },
 
+    // This should only be called when text width is too long.
     updateGeometry: function(difference) {
-        const expandRatio = (difference / this.canvas.width) + 1;
+        var el = this.el;
+        var expandRatio = difference / this.canvas.width + 1;
         this.canvas.width *= expandRatio;
-        const elGeometry = this.el.getComputedAttribute('geometry');
-        const newWidth = elGeometry.width * expandRatio;
-        const oldHeight = elGeometry.height;
+        var elGeometry = el.getComputedAttribute('geometry');
+        var newWidth = elGeometry.width * expandRatio;
+        var oldHeight = elGeometry.height;
 
         this.mesh.geometry = new THREE.PlaneBufferGeometry(newWidth, oldHeight);
-        this.el.setAttribute('geometry', {
+        el.setAttribute('geometry', {
             primitive: elGeometry.primitive,
             width: newWidth,
             height: oldHeight,
@@ -74,14 +89,14 @@ AFRAME.registerComponent('araisedcanvas', {
     },
 
     render: function() {
-        if(this.renderer) {
+        if (this.renderer) {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.renderer();
         }
         this.texture.needsUpdate = true;
     },
 
-	remove: function () {
+    remove: function() {
         this.el.removeEventListener('loaded', this.listeners.elementLoad);
     }
 });

@@ -17,7 +17,7 @@ import React from 'react';
 const ANIMATION_DURATION = '500';
 
 export default class ACursor extends React.Component {
-    static propsType = {
+    static propTypes = {
         innerSize: React.PropTypes.number,
         outerSize: React.PropTypes.number,
         color: React.PropTypes.string,

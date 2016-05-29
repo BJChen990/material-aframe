@@ -1,42 +1,47 @@
 import React, {PropTypes} from 'react';
 import AbstractFloatingButton from './AbstractFloatingButton.react';
 
-export default class ARaisedButton extends AbstractFloatingButton {
+const ButtonType = {
+    NORMAL: 'normal',
+    MINI: 'mini'
+};
+
+export default class AFloatingActionButton extends AbstractFloatingButton {
+
     static propTypes = {
         ...AbstractFloatingButton.propTypes,
-        width: PropTypes.number,
-        text: PropTypes.string,
-        fontColor: PropTypes.string,
-        textStyle: PropTypes.object,
-        textDimension: PropTypes.string
+        buttonType: PropTypes.string,
+        iconSrc: PropTypes.string,
+        iconColor: PropTypes.string
     }
 
     static defaultProps = {
         ...AbstractFloatingButton.defaultProps,
-        width: 1,
-        text: 'BUTTON',
-        textStyle: {},
-        iconStyle: {},
-        textDimension: '2d'
+        buttonType: ButtonType.NORMAL,
+        iconColor: 'black'
     }
 
     render() {
         const {
-            width,
+            buttonType,
             backgroundColor,
-            text,
+            iconSrc,
+            iconColor,
             ...others
         } = this.props;
+
+        const buttonRadius = (buttonType === ButtonType.MINI) ? 0.2 : 0.31;
+        const canvasSize = buttonRadius * 360;
 
         return (
             <a-entity
                 ref='button'
-                geometry = {`primitive:roundedrect; radius: 0.02; width: ${width}; height: ${0.4};`}
+                geometry={`primitive: circle; radius: ${buttonRadius}`}
                 material={`color: ${backgroundColor}; shader: flat;`}
-                shadow='src: /images/shadow.png; scaleX: 1.2; scaleY: 1.2;'
-                araisedcanvas={`width: ${width * 360}; height: ${0.4 * 360};`}
-                button-text={`text: ${text}; color: ${this.props.fontColor}; fontFamily: OpenSans;`}
-                ripple={`color: ${this._rippleColor};`}
+                araisedcanvas={`width: ${canvasSize}; height: ${canvasSize};`}
+                shadow='src: /images/radial-gradient.png; scaleX: 1.2; scaleY: 1.2;'
+                svg={`path: ${iconSrc}; iconColor: ${iconColor}`}
+                ripple={`color: ${this._rippleColor}; type: circle;`}
                 {...others}
             >
                 <a-animation

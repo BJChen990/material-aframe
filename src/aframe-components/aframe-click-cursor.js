@@ -22,7 +22,7 @@ var STATES = {
  * @member {Element} intersectedEl - Currently-intersected entity. Used to keep track to
  *         emit events when unintersecting.
  */
-AFRAME.registerComponent('acursor', {
+window.AFRAME.registerComponent('acursor', {
     dependencies: ['raycaster'],
 
     schema: {
