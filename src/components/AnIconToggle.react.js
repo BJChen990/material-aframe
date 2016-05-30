@@ -12,21 +12,27 @@ export default class AnIconToggle extends AbstractFlatButton {
         ...AbstractFlatButton.propTypes,
         buttonType: PropTypes.string,
         iconSrc: PropTypes.string,
-        iconColor: PropTypes.string
+        value: PropTypes.bool,
+        iconColor: PropTypes.string,
+        toggleIconColor: PropTypes.string
     }
 
     static defaultProps = {
         ...AbstractFlatButton.defaultProps,
         buttonType: ButtonType.NORMAL,
-        iconColor: 'black'
+        value: false,
+        iconColor: 'black',
+        toggleIconColor: 'grey'
     }
 
     render() {
         const {
             buttonType,
             backgroundColor,
+            value,
             iconSrc,
             iconColor,
+            toggleIconColor,
             ...others
         } = this.props;
 
@@ -39,7 +45,7 @@ export default class AnIconToggle extends AbstractFlatButton {
                 geometry={`primitive: circle; radius: ${buttonRadius}`}
                 material={`color: ${backgroundColor}; transparent: true; opacity: 0;`}
                 araisedcanvas={`width: ${canvasSize}; height: ${canvasSize};`}
-                svg={`path: ${iconSrc}; iconColor: ${iconColor}`}
+                svg={`path: ${iconSrc}; color: ${value ? toggleIconColor : iconColor}`}
                 ripple={`color: ${this._rippleColor}; type: circle;`}
                 {...others}
             >

@@ -1,22 +1,22 @@
 import React, {PropTypes} from 'react';
-import AbstractFloatingButton from './AbstractFloatingButton.react';
+import AbstractFlatButton from './AbstractFlatButton.react';
 
 const ButtonType = {
     NORMAL: 'normal',
     MINI: 'mini'
 };
 
-export default class AFloatingActionButton extends AbstractFloatingButton {
+export default class AnIconButton extends AbstractFlatButton {
 
     static propTypes = {
-        ...AbstractFloatingButton.propTypes,
+        ...AbstractFlatButton.propTypes,
         buttonType: PropTypes.string,
         iconSrc: PropTypes.string,
         iconColor: PropTypes.string
     }
 
     static defaultProps = {
-        ...AbstractFloatingButton.defaultProps,
+        ...AbstractFlatButton.defaultProps,
         buttonType: ButtonType.NORMAL,
         iconColor: 'black'
     }
@@ -37,9 +37,8 @@ export default class AFloatingActionButton extends AbstractFloatingButton {
             <a-entity
                 ref='button'
                 geometry={`primitive: circle; radius: ${buttonRadius}`}
-                material={`color: ${backgroundColor}; shader: flat;`}
+                material={`color: ${backgroundColor}; transparent: true; opacity: 0;`}
                 araisedcanvas={`width: ${canvasSize}; height: ${canvasSize};`}
-                shadow='src: /images/radial-gradient.png; scaleX: 1.2; scaleY: 1.2;'
                 svg={`path: ${iconSrc}; color: ${iconColor}`}
                 ripple={`color: ${this._rippleColor}; type: circle;`}
                 {...others}
@@ -47,16 +46,16 @@ export default class AFloatingActionButton extends AbstractFloatingButton {
                 <a-animation
                     begin='cursor-mouseenter'
                     dur='200'
-                    attribute='material.color'
-                    from={backgroundColor}
-                    to={this._hoverColor}
+                    attribute='material.opacity'
+                    from='0'
+                    to='0.3'
                 />
                 <a-animation
                     begin='cursor-mouseleave'
                     dur='200'
-                    attribute='material.color'
-                    from={this._hoverColor}
-                    to={backgroundColor}
+                    attribute='material.opacity'
+                    from='0.3'
+                    to='0'
                 />
             </a-entity>
         );
