@@ -6,14 +6,18 @@ AFRAME.registerComponent('shadow', {
     schema: {
         src: { default: '' },
         scaleX: { default: 1.2 },
-        scaleY: { default: 1.2 }
+        scaleY: { default: 1.2 },
+        depth: {default: -0.105},
+        clickEnable: { default: true }
     },
 
     init: function() {
-        this.listeners = {
-            click: this._onClick.bind(this)
-        };
-        this.el.addEventListener('cursor-click', this.listeners.click);
+        if (this.data.clickEnable) {
+            this.listeners = {
+                click: this._onClick.bind(this)
+            };
+            this.el.addEventListener('cursor-click', this.listeners.click);
+        }
     },
 
     update: function() {
@@ -32,7 +36,7 @@ AFRAME.registerComponent('shadow', {
         mesh.scale.set(data.scaleX, data.scaleY, 1);
         mesh.el = el;
         el.object3D.add(mesh);
-        mesh.position.set(0, -0.02, -0.105);
+        mesh.position.set(0, -0.02, data.depth);
         this.mesh = mesh;
     },
 

@@ -33,6 +33,7 @@
     "gulp-babel": "^6.1.2"
   },
   "dependencies": {
+    "linebreak": "^0.3.0",
     "load-svg": "^1.0.0"
   }
 }

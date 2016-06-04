@@ -1,7 +1,6 @@
 import TextUtil from '../utils/TextUtil';
 
-const FONT_SIZE = 48;
-
+const FONT_SIZE = 56;
 
 window.AFRAME.registerComponent('button-text', {
     schema: {
@@ -29,22 +28,24 @@ window.AFRAME.registerComponent('button-text', {
     },
 
     update: function() {
+        const data = this.data;
+        const draw = this.draw;
         const size = TextUtil.calculateTextSize(
-            this.draw.ctx,
-            this.data.text,
-            this.data.fontSize,
-            this.data.fontFamily
+            draw.ctx,
+            data.text,
+            data.fontSize,
+            data.fontFamily
         );
         this.textWidth = size.width;
-        this.textHeight = size.height;
+        this.textHeight = data.fontSize * 1.2;
 
         // If the text is too long, update the geometry and canvas
-        const diffOfWidth = this.draw.canvas.width - this.textWidth - 64;
+        const diffOfWidth = draw.canvas.width - this.textWidth - 64;
         if (diffOfWidth < 0) {
-            this.draw.updateGeometry(-diffOfWidth);
+            draw.updateGeometry(-diffOfWidth);
         }
 
-        this.draw.render();
+        draw.render();
     },
 
     renderFunction: function () {
