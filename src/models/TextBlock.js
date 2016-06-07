@@ -1,5 +1,6 @@
 import TextUtil from '../utils/TextUtil';
 import LineBreaker from 'linebreak';
+import Constants from '../constants';
 
 export default class TextBlock {
     constructor(ctx, width, options = {}) {
@@ -8,26 +9,27 @@ export default class TextBlock {
         this._paddingHorizontal = options.horizontalPadding || 0;
         this._paddingVertical = options.verticalPadding || 0;
         this._titleFontSize = options.titleFontSize || 24 * 4;
-        this._subtitleFontSize = options.titleFontSize || 18 * 4;
+        this._subtitleFontSize = options.subtitleFontSize || 18 * 4;
         this._fontSize = options.fontSize || 52;
         this._fontFamily = options.fontFamily || 'OpenSans';
         this._lines = [];
     }
 
-    pushText(text, isTitle = false) {
-        let remainedString = this._processLine(text, isTitle);
+    pushText(text, type = Constants.TextBlockTextType.NORMAL) {
+        let remainedString = this._processLine(text, type);
         while (remainedString !== '') {
-            remainedString = this._processLine(remainedString, isTitle);
+            remainedString = this._processLine(remainedString, type);
         }
     }
 
-    _processLine(text, isTitle) {
+    _processLine(text, type) {
         const breaker = new LineBreaker(text);
         const lines = this._lines;
         let last = 0,
             bk = breaker.nextBreak(),
             currentSplit = {string:'', end:0, width: 0},
-            fontSize = isTitle ? this._titleFontSize : this._fontSize,
+            fontSize = (type === Constants.TextBlockTextType.TITLE) ? this._titleFontSize :
+                ((type === Constants.TextBlockTextType.SUBTITLE) ? this._subtitleFontSize : this._fontSize),
             fontFamily = this._fontFamily,
             maxWidth = this._width - this._paddingHorizontal * 2,
             ctx = this._ctx;
@@ -61,7 +63,7 @@ export default class TextBlock {
         let height = 2 * this._paddingVertical;
 
         for (let i = 0; i < lineLength; i++) {
-            height += lines[i].fontSize * 1.5;
+            height += lines[i].fontSize * 1.2;
         }
 
         return {

@@ -1,0 +1,21 @@
+export default {
+    METER_TO_PIXEL: 90,
+    PIXEL_TO_CANVAS_PIXEL: 4,
+    METER_TO_CANVAS_PIXEL: 360,
+    CANVAS_PIXEL_TO_PIXEL: 0.25,
+    PIXEL_TO_METER: 1 / 90,
+    CANVAS_PIXEL_TO_METER: 1 / 360,
+
+    CARD_TITLE_PADDING: 24,
+    CARD_TITLE_TITLE_FONT_SIZE: 24,
+    CARD_TITLE_SUBTITLE_FONT_SIZE: 14,
+
+    CARD_TEXT_PADDING: 16,
+    CARD_TEXT_FONT_SIZE: 14,
+
+    TextBlockTextType: {
+        TITLE: 'title',
+        SUBTITLE: 'subtitle',
+        NORMAL: 'noraml'
+    }
+};

@@ -12,6 +12,8 @@ export ARaisedButton from './AButtons/ARaisedButton.react';
 export AFlatButton from './AButtons/AFlatButton.react';
 export AnIconToggle from './AButtons/AnIconToggle.react';
 export AnIconButton from './AButtons/AnIconButton.react';
-export ACard from './ACard';
+export ACard from './ACard/ACard.react';
+export ACardTitle from './ACard/ACardTitle.react';
+export ACardText from './ACard/ACardText.react';
 
 export ACursor from './components/ACursor.react';
