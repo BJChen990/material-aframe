@@ -1,4 +1,5 @@
 import React from 'react';
+require('../aframe-components/aframe-cursor-raycaster');
 
 // Usage:
 // <ACursor
@@ -218,7 +219,7 @@ export default class ACursor extends React.Component {
         return (
             <a-entity
                 ref="cursor"
-                raycaster='interval: 500; far: 10; recursive: true;'
+                cursor-raycaster='interval: 500; far: 10; recursive: true;'
                 acursor={`fuse: true; fuseTimeout: ${props.timeout};`}
                 position='0 0 -2'
                 geometry={`primitive: ring; radiusInner: ${props.innerSize}; radiusOuter: ${props.outerSize};`}

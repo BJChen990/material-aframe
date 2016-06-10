@@ -40,6 +40,7 @@ export default class ARaisedButton extends AbstractFloatingButton {
         return (
             <a-entity {...others}>
                 <a-entity
+                    clickable={true}
                     ref='button'
                     geometry = {`primitive:roundedrect; radius: 0.02; width: ${width}; height: ${0.4};`}
                     material={`color: ${backgroundColor}; shader: flat;`}

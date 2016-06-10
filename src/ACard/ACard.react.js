@@ -172,6 +172,7 @@ export default class ACard extends React.Component {
 
         return (
             <a-entity
+                hoverable={true}
                 {...others}
                 position="0 0 -4"
                 geometry={`primitive: roundedrect; width: ${this.props.width}; height: ${this._height}; radius: 0.02;`}

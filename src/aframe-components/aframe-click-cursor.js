@@ -23,7 +23,7 @@ var STATES = {
  *         emit events when unintersecting.
  */
 window.AFRAME.registerComponent('acursor', {
-    dependencies: ['raycaster'],
+    dependencies: ['cursor-raycaster'],
 
     schema: {
         fuse: {default: true},
@@ -90,9 +90,16 @@ window.AFRAME.registerComponent('acursor', {
         var cursorEl = this.el;
         var data = this.data;
         var intersectedEl = evt.detail.els[0];  // Grab the closest.
+        const lastIntersectedEl = this.intersectedEl;
 
         // Set intersected entity if not already intersecting.
-        if (this.intersectedEl === intersectedEl) { return; }
+        if (lastIntersectedEl === intersectedEl) { return; }
+        else if (lastIntersectedEl) {
+            lastIntersectedEl.removeState(STATES.HOVERED);
+            lastIntersectedEl.emit(EVENTS.MOUSELEAVE, {cursorEl: this.el, intersectInfo: this.eventInfo});
+            clearTimeout(this.fuseTimeout);
+        }
+        // clear last;
         this.intersectedEl = intersectedEl;
 
         // Hovering.
