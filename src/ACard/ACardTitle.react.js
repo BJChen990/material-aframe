@@ -27,7 +27,7 @@ export default class ACardTitle extends React.Component {
         return (
             <a-entity
                 geometry={`primitive: plane; width: ${width}; height: ${height};`}
-                material={'color: blue;'}
+                material={'color: #fafafa;'}
                 araisedcanvas={`width: ${width * 360}; height: ${height * 360};`}
                 text2d={`textJson: ${JSON.stringify(textJson)};`}
                 {...others}

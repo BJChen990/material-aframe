@@ -38,30 +38,32 @@ export default class ARaisedButton extends AbstractFloatingButton {
         } = this.props;
 
         return (
-            <a-entity
-                ref='button'
-                geometry = {`primitive:roundedrect; radius: 0.02; width: ${width}; height: ${0.4};`}
-                material={`color: ${backgroundColor}; shader: flat;`}
-                shadow='src: /images/shadow.png; scaleX: 1.1; scaleY: 1.15;'
-                araisedcanvas={`width: ${width * 360}; height: ${0.4 * 360};`}
-                button-text={`text: ${text}; color: ${this.props.fontColor}; fontFamily: OpenSans;`}
-                ripple={`color: ${this._rippleColor};`}
-                {...others}
-            >
-                <a-animation
-                    begin='cursor-mouseenter'
-                    dur='200'
-                    attribute='material.color'
-                    from={backgroundColor}
-                    to={this._hoverColor}
-                />
-                <a-animation
-                    begin='cursor-mouseleave'
-                    dur='200'
-                    attribute='material.color'
-                    from={this._hoverColor}
-                    to={backgroundColor}
-                />
+            <a-entity {...others}>
+                <a-entity
+                    ref='button'
+                    geometry = {`primitive:roundedrect; radius: 0.02; width: ${width}; height: ${0.4};`}
+                    material={`color: ${backgroundColor}; shader: flat;`}
+                    shadow='src: /images/shadow.png; scaleX: 1.1; scaleY: 1.15;'
+                    araisedcanvas={`width: ${width * 360}; height: ${0.4 * 360};`}
+                    button-text={`text: ${text}; color: ${this.props.fontColor}; fontFamily: OpenSans;`}
+                    ripple={`color: ${this._rippleColor};`}
+                    position='0 0 0.1'
+                >
+                    <a-animation
+                        begin='cursor-mouseenter'
+                        dur='200'
+                        attribute='material.color'
+                        from={backgroundColor}
+                        to={this._hoverColor}
+                    />
+                    <a-animation
+                        begin='cursor-mouseleave'
+                        dur='200'
+                        attribute='material.color'
+                        from={this._hoverColor}
+                        to={backgroundColor}
+                    />
+                </a-entity>
             </a-entity>
         );
     }

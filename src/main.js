@@ -15,5 +15,7 @@ export AnIconButton from './AButtons/AnIconButton.react';
 export ACard from './ACard/ACard.react';
 export ACardTitle from './ACard/ACardTitle.react';
 export ACardText from './ACard/ACardText.react';
+export ACardActions from './ACard/ACardActions.react';
+export ACardMedia from './ACard/ACardMedia.react';
 
 export ACursor from './components/ACursor.react';

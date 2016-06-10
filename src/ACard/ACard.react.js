@@ -4,6 +4,8 @@ import TextBlock from '../models/TextBlock';
 import Constants from '../constants';
 import ACardTitle from './ACardTitle.react';
 import ACardText from './ACardText.react';
+import ACardActions from './ACardActions.react';
+import ACardMedia from './ACardMedia.react';
 
 const CanvasPixelToMeter = Constants.CANVAS_PIXEL_TO_METER;
 const CardTitlePadding = Constants.CARD_TITLE_PADDING;
@@ -23,7 +25,7 @@ export default class ACard extends React.Component {
     }
 
     static defaultProps = {
-        width: 2.5,
+        width: 3,
         backgroundColor: '#fafafa',
         text: 'This is a test textField to test card.\n Do not forget to test.'
     }
@@ -80,12 +82,51 @@ export default class ACard extends React.Component {
                 this._height += mHeight;
                 break;
             }
+            case ACardMedia: {
+                newChildren.push(
+                    React.cloneElement(currentChild, {
+                        key: 'media',
+                        width: this.props.width,
+                        position: `0 ${-this._height - this.props.width * 0.5} 0.005`
+                    })
+                );
+                this._height += this.props.width;
+                break;
+            }
+            case ACardActions: {
+                const positions = this._processActions(currentChild);
+                const mHeight = 0.4 + 8 * 2 * Constants.PIXEL_TO_METER;
+                newChildren.push(
+                    React.cloneElement(currentChild, {
+                        key: 'actions',
+                        width: this.props.width,
+                        height: 0.4 + 8 * 2 * Constants.PIXEL_TO_METER,
+                        position: `0 ${-this._height - mHeight * 0.5} 0.005`,
+                        positions: positions
+                    })
+                );
+                this._height += mHeight;
+                break;
+            }
             default:
                 throw new Error('Invalid children type sent to ACard.');
             }
         }
 
         return newChildren;
+    }
+
+    _processActions(component) {
+        const {children} = component.props;
+        const length = children.length;
+        const positions = [];
+        let yPosition = 8 * Constants.PIXEL_TO_METER + 0.97 * 0.5;
+
+        for (let i = 0; i < length; i++) {
+            positions.push(yPosition);
+            yPosition += 8 * Constants.PIXEL_TO_METER + 0.97;
+        }
+        return positions;
     }
 
     _processText(component) {
@@ -101,7 +142,6 @@ export default class ACard extends React.Component {
             }
         );
         textBlock.pushText(children, Constants.TextBlockTextType.NORMAL);
-        console.log(textBlock.toJS());
         return textBlock.toJS();
     }
 
@@ -120,7 +160,6 @@ export default class ACard extends React.Component {
         );
         textBlock.pushText(title, Constants.TextBlockTextType.TITLE);
         textBlock.pushText(subtitle, Constants.TextBlockTextType.SUBTITLE);
-        console.log(textBlock.toJS());
         return textBlock.toJS();
     }
 
@@ -128,46 +167,16 @@ export default class ACard extends React.Component {
         const newChildren = this._getProcessedChildren();
 
         return (
-            <a-entity position="0 0 -4">
-                {newChildren}
+            <a-entity
+                position="0 0 -4"
+                geometry={`primitive: roundedrect; width: ${this.props.width}; height: ${this._height}; radius: 0.02;`}
+                material={'color: #fafafa;'}
+                shadow='src: /images/shadow.png; scaleX: 1.1; scaleY: 1.1; depth: -0.001; dy: 0; clickEnable: false;'
+            >
+                <a-entity position={`0 ${this._height * 0.5} 0`}>
+                    {newChildren}
+                </a-entity>
             </a-entity>
         );
-
-        // return (
-        //     <a-entity
-        //         geometry={`primitive: roundedrect; width: ${width}; height: ${cardHeight}; radius: 0.02;`}
-        //         material={`color: ${backgroundColor};`}
-        //         shadow='src: /images/shadow.png; scaleX: 1.1; scaleY: 1.1; depth: -0.001; dy: 0; clickEnable: false;'
-        //         {...others}
-        //     >
-        //         {/* Image */}
-        //         <a-entity
-        //             position={`0 ${cardCenter} 0.0001`}
-        //             geometry={`primitive: plane; width: ${width}; height: ${width * Ratio}; radius: 0.02; topOnly: true;`}
-        //             material={`color: white; src: url(${imageUrl})`}
-        //         />
-        //
-        //         {/* TextAreaPaper */}
-        //         <a-entity
-        //             position={`0 ${textCenter} 0.005`}
-        //             geometry={`primitive: plane; width: ${width}; height: ${textHeight};`}
-        //             material={`color: ${backgroundColor};`}
-        //             araisedcanvas={`width: ${width * 360}; height: ${textJson.height};`}
-        //             text2d={`textJson: ${JSON.stringify(textJson)};`}
-        //         />
-        //
-        //         {/* Actions */}
-        //         <a-entity
-        //             position={`0 ${actionCenter} 0.005`}
-        //             geometry={`primitive: roundedrect; width: ${width}; height: ${0.577777}; radius: 0.02; bottomOnly: true`}
-        //             material={`color: ${backgroundColor};`}
-        //         >
-        //             <AFlatButton
-        //                 position="0 0 0.01"
-        //                 text="BUTTON"
-        //             />
-        //         </a-entity>
-        //     </a-entity>
-        // );
     }
 }
