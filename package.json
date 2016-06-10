@@ -30,7 +30,8 @@
     "eslint": "^2.11.0",
     "eslint-plugin-react": "^5.1.1",
     "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2"
+    "gulp-babel": "^6.1.2",
+    "gulp-cached": "^1.1.0"
   },
   "dependencies": {
     "linebreak": "^0.3.0",

@@ -35,8 +35,8 @@ export default class ACard extends React.Component {
         this._height = 0;
     }
 
-    _getProcessedChildren() {
-        let children = this.props.children;
+    _getProcessedChildren(oldChildren) {
+        let children = oldChildren;
         if (!children) {
             throw new Error('Currently ACard must has a valid-type children.');
         }
@@ -164,10 +164,15 @@ export default class ACard extends React.Component {
     }
 
     render() {
-        const newChildren = this._getProcessedChildren();
+        const {
+            children,
+            ...others
+        } = this.props;
+        const newChildren = this._getProcessedChildren(children);
 
         return (
             <a-entity
+                {...others}
                 position="0 0 -4"
                 geometry={`primitive: roundedrect; width: ${this.props.width}; height: ${this._height}; radius: 0.02;`}
                 material={'color: #fafafa;'}
