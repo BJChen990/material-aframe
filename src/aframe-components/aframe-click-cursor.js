@@ -93,7 +93,9 @@ window.AFRAME.registerComponent('acursor', {
         const lastIntersectedEl = this.intersectedEl;
 
         // Set intersected entity if not already intersecting.
-        if (lastIntersectedEl === intersectedEl) { return; }
+        if (lastIntersectedEl === intersectedEl) {
+            return;
+        }
         else if (lastIntersectedEl) {
             lastIntersectedEl.removeState(STATES.HOVERED);
             lastIntersectedEl.emit(EVENTS.MOUSELEAVE, {cursorEl: this.el, intersectInfo: this.eventInfo});
@@ -133,9 +135,14 @@ window.AFRAME.registerComponent('acursor', {
 
         // No longer hovering (or fusing).
         intersectedEl.removeState(STATES.HOVERED);
-        cursorEl.removeState(STATES.HOVERING);
-        cursorEl.removeState(STATES.FUSING);
-        this.twoWayEmit(EVENTS.MOUSELEAVE);
+        if (this.intersectedEl === intersectedEl) {
+            cursorEl.removeState(STATES.HOVERING);
+            cursorEl.removeState(STATES.FUSING);
+            this.twoWayEmit(EVENTS.MOUSELEAVE);
+        }
+        else {
+            intersectedEl.emit(EVENTS.MOUSELEAVE);
+        }
 
         // Unset intersected entity (after emitting the event).
         this.intersectedEl = null;

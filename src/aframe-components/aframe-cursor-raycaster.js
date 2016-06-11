@@ -73,8 +73,8 @@ AFRAME.registerComponent('cursor-raycaster', {
         if (prevCheckTime && (time - prevCheckTime < data.interval)) { return; }
 
         const prevIntersectedEls = this.intersectedEls;
-        const intersectedEls = {};  // Reset intersectedEls.
-
+        const intersectedEls = [];  // Reset intersectedEls.
+        let i;
 
         // Raycast.
         this.updateOriginDirection();
@@ -83,28 +83,24 @@ AFRAME.registerComponent('cursor-raycaster', {
 
         // Update intersectedEls object first in case event handlers try to inspect it.
         if (intersectionLength) {
-            const intersectList = [];
-            for (let i = 0; i < intersectionLength; i++) {
+            for (i = 0; i < intersectionLength; i++) {
                 const intersection = intersections[i];
-                const intersectObject = intersection.object;
-                const intersectionEl = intersectObject.el;
-                const uuid = intersectObject.uuid;
-                intersectList.push(intersectionEl);
-                intersectedEls[uuid] = intersectionEl;
-                if (!prevIntersectedEls[uuid]) {
-                    intersectionEl.emit('raycaster-intersected', {el: el, intersection: intersection});
-                }
+                const intersectionEl = intersection.object.el;
+                intersectedEls.push(intersectionEl);
+                intersectionEl.emit('raycaster-intersected', {el: el, intersection: intersection});
             }
             el.emit('raycaster-intersection', {
-                els: intersectList,
+                els: intersectedEls,
                 intersections: intersections
             });
         }
 
+        const prevIntersectedElLength = prevIntersectedEls.length;
         // Emit intersection cleared on both entities per formerly intersected entity.
-        for (let uuid in prevIntersectedEls) {
-            if (intersectedEls[uuid]) { return; }
-            const element = prevIntersectedEls[uuid];
+        for (i = 0; i < prevIntersectedElLength; i++) {
+            const element = prevIntersectedEls[i];
+
+            if (intersectedEls.indexOf(element) !== -1) {continue;}
             el.emit('raycaster-intersection-cleared', {el: element});
             element.emit('raycaster-intersected-cleared', {el: el});
         }

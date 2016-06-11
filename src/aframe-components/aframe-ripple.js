@@ -79,11 +79,8 @@ AFRAME.registerComponent('ripple', {
         new TWEEN.Tween(mesh.scale).to({ x: targetRatio, y: targetRatio, z: targetRatio }, 800).start();
         new TWEEN.Tween(mesh.material).to({ opacity: 0 }, 800).start();
 
-        var timeout = setTimeout(function () {
-            mesh.el = null;
+        setTimeout(function () {
             el.object3DMap.mesh.remove(mesh);
-            mesh = null;
-            clearTimeout(timeout);
             _this.isClicking = false;
         }, 800);
     },
