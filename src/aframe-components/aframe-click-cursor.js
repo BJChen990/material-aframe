@@ -112,10 +112,13 @@ window.AFRAME.registerComponent('acursor', {
         // Begin fuse if necessary.
         if (data.fuseTimeout === 0 || !data.fuse) { return; }
         cursorEl.addState(STATES.FUSING);
-        this.fuseTimeout = setTimeout(function fuse () {
-            cursorEl.removeState(STATES.FUSING);
-            self.twoWayEmit(EVENTS.CLICK);
-        }, data.fuseTimeout);
+
+        if (intersectedEl.attributes.clickable) {
+            this.fuseTimeout = setTimeout(function fuse () {
+                cursorEl.removeState(STATES.FUSING);
+                self.twoWayEmit(EVENTS.CLICK);
+            }, data.fuseTimeout);
+        }
     },
 
     /**

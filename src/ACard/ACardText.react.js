@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class ACardTitle extends React.Component {
+export default class ACardText extends React.Component {
 
     static propTypes = {
         children: React.PropTypes.string,

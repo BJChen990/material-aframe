@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default class ACardTitle extends React.Component {
+export default class ACardActions extends React.Component {
 
     static propTypes = {
-        children: React.PropTypes.object,
+        children: React.PropTypes.array,
         height: React.PropTypes.number,
         width: React.PropTypes.number
     }
@@ -26,6 +26,7 @@ export default class ACardTitle extends React.Component {
 
         for (let i = 0; i < childrenLength; i++) {
             newChildren.push(React.cloneElement(mChildren[i], {
+                key: i,
                 position: `${-width * 0.5 + positions[i]} 0 0.01`
             }));
         }

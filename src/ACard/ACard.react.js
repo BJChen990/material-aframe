@@ -21,7 +21,7 @@ export default class ACard extends React.Component {
         backgroundColor: React.PropTypes.string,
         text: React.PropTypes.string,
         imageUrl: React.PropTypes.string,
-        children: React.PropTypes.object
+        children: React.PropTypes.array
     }
 
     static defaultProps = {
