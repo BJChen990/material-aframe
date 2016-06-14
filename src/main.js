@@ -17,5 +17,7 @@ export ACardTitle from './ACard/ACardTitle.react';
 export ACardText from './ACard/ACardText.react';
 export ACardActions from './ACard/ACardActions.react';
 export ACardMedia from './ACard/ACardMedia.react';
+export ACardHeader from './ACard/ACardHeader.react';
+export AnAvatar from './AnAvatar/AnAvatar.react';
 
 export ACursor from './components/ACursor.react';

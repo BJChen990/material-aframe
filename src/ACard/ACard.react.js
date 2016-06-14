@@ -6,6 +6,7 @@ import ACardTitle from './ACardTitle.react';
 import ACardText from './ACardText.react';
 import ACardActions from './ACardActions.react';
 import ACardMedia from './ACardMedia.react';
+import ACardHeader from './ACardHeader.react';
 
 const CanvasPixelToMeter = Constants.CANVAS_PIXEL_TO_METER;
 const CardTitlePadding = Constants.CARD_TITLE_PADDING;
@@ -51,6 +52,19 @@ export default class ACard extends React.Component {
         for (let i = 0; i < childrenLength; i++) {
             const currentChild = children[i];
             switch (currentChild.type) {
+            case ACardHeader: {
+                const mHeight = 72 * Constants.PIXEL_TO_METER;
+                newChildren.push(
+                    React.cloneElement(currentChild, {
+                        key: 'header',
+                        width: this.props.width,
+                        height: mHeight,
+                        position: `0 ${-this._height - mHeight * 0.5} 0.005`
+                    })
+                );
+                this._height += mHeight;
+                break;
+            }
             case ACardTitle: {
                 const data = this._processTitle(currentChild);
                 const mHeight = data.height * CanvasPixelToMeter;
