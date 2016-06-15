@@ -3,15 +3,17 @@ import React from 'react';
 export default class ACardActions extends React.Component {
 
     static propTypes = {
-        children: React.PropTypes.array,
+        positions: React.PropTypes.array,
+        children: React.PropTypes.node,
         height: React.PropTypes.number,
         width: React.PropTypes.number
     }
 
     _processChildren(children) {
-        const props = this.props;
-        const width = props.width;
-        const positions = props.positions;
+        const {
+            positions,
+            width
+        } = this.props;
         let mChildren = children;
         if (!children) {
             return null;
@@ -21,7 +23,8 @@ export default class ACardActions extends React.Component {
         if (!Array.isArray(mChildren)) {
             mChildren = [mChildren];
         }
-        const childrenLength = children.length;
+
+        const childrenLength = mChildren.length;
         let newChildren = [];
 
         for (let i = 0; i < childrenLength; i++) {

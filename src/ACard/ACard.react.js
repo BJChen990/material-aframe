@@ -1,4 +1,5 @@
 import React from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import TextUtil from '../utils/TextUtil';
 import TextBlock from '../models/TextBlock';
 import Constants from '../constants';
@@ -34,6 +35,10 @@ export default class ACard extends React.Component {
     constructor(props) {
         super(props);
         this._height = 0;
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(this, nextProps, nextState);
     }
 
     _getProcessedChildren(oldChildren) {
@@ -132,13 +137,20 @@ export default class ACard extends React.Component {
 
     _processActions(component) {
         const {children} = component.props;
+        if (!children) {
+            return [];
+        }
+        else if (!Array.isArray(children)) {
+            return [8 * Constants.PIXEL_TO_METER + 0.97 * 0.5];
+        }
+
         const length = children.length;
         const positions = [];
-        let yPosition = 8 * Constants.PIXEL_TO_METER + 0.97 * 0.5;
+        let xPosition = 8 * Constants.PIXEL_TO_METER + 0.97 * 0.5;
 
         for (let i = 0; i < length; i++) {
-            positions.push(yPosition);
-            yPosition += 8 * Constants.PIXEL_TO_METER + 0.97;
+            positions.push(xPosition);
+            xPosition += 8 * Constants.PIXEL_TO_METER + 0.97;
         }
         return positions;
     }
@@ -187,11 +199,10 @@ export default class ACard extends React.Component {
         return (
             <a-entity
                 hoverable={true}
-                {...others}
-                position="0 0 -4"
                 geometry={`primitive: roundedrect; width: ${this.props.width}; height: ${this._height}; radius: 0.02;`}
                 material={'color: #fafafa;'}
                 shadow='src: /images/shadow.png; scaleX: 1.1; scaleY: 1.1; depth: -0.001; dy: 0; clickEnable: false;'
+                {...others}
             >
                 <a-entity position={`0 ${this._height * 0.5} 0`}>
                     {newChildren}
