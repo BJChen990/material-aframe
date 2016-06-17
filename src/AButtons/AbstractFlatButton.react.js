@@ -50,15 +50,12 @@ export default class AbstractFlatButton extends React.Component {
     }
 
     _handleClick = () => {
-        let timer = setTimeout(() => {
-            clearTimeout(timer);
-            timer = setTimeout(() => {
-                clearTimeout(timer);
-                if (this.props.onClick) {
-                    this.props.onClick();
-                }
-                timer = null;
-            }, 500);
-        }, 300);
+        const onClick = this.props.onClick;
+
+        setTimeout(() => {
+            if (onClick) {
+                onClick();
+            }
+        }, 600);
     }
 }

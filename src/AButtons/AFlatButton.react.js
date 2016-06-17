@@ -28,6 +28,7 @@ export default class AFlatButton extends AbstractFlatButton {
         return (
             <a-entity
                 ref='button'
+                clickable={true}
                 geometry={`primitive:roundedrect; radius: 0.02; width: ${width}; height: 0.4;`}
                 material={`color: ${backgroundColor}; transparent: true; opacity: 0;`}
                 araisedcanvas={`width: ${width * 360}; height: ${0.4 * 360};`}

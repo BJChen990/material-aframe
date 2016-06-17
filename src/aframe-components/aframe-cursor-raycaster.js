@@ -30,6 +30,12 @@ AFRAME.registerComponent('cursor-raycaster', {
         this.prevCheckTime = undefined;
         this.raycaster = new THREE.Raycaster();
         this.updateOriginDirection();
+        this.mutationObserver = new MutationObserver(this.update.bind(this));
+
+        this.mutationObserver.observe(this.el.sceneEl, {
+            childList: true,
+            subtree: false
+        });
     },
 
   /**

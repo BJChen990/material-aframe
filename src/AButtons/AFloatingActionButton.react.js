@@ -36,6 +36,7 @@ export default class AFloatingActionButton extends AbstractFloatingButton {
         return (
             <a-entity
                 ref='button'
+                clickable={true}
                 geometry={`primitive: circle; radius: ${buttonRadius}`}
                 material={`color: ${backgroundColor}; shader: flat;`}
                 araisedcanvas={`width: ${canvasSize}; height: ${canvasSize};`}

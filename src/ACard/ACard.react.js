@@ -41,6 +41,10 @@ export default class ACard extends React.Component {
         return shallowCompare(this, nextProps, nextState);
     }
 
+    componentWillUpdate() {
+        this._height = 0;
+    }
+
     _getProcessedChildren(oldChildren) {
         let children = oldChildren;
         if (!children) {

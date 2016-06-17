@@ -42,6 +42,7 @@ export default class AnIconToggle extends AbstractFlatButton {
         return (
             <a-entity
                 ref='button'
+                clickable={true}
                 geometry={`primitive: circle; radius: ${buttonRadius}`}
                 material={`color: ${backgroundColor}; transparent: true; opacity: 0;`}
                 araisedcanvas={`width: ${canvasSize}; height: ${canvasSize};`}

@@ -51,18 +51,20 @@ export default class AbstractFloatingButton extends React.Component {
 
     _handleClick = () => {
         const position = this.refs.button.object3DMap.mesh.position;
-        new TWEEN.Tween(position).to({x: 0, y: 0, z: -0.1}, 300).start();
+        const onClick = this.props.onClick;
 
-        let timer = setTimeout(() => {
-            clearTimeout(timer);
-            new TWEEN.Tween(position).to({x: 0, y: 0, z: 0}, 300).start();
-            timer = setTimeout(() => {
-                clearTimeout(timer);
-                if (this.props.onClick) {
-                    this.props.onClick();
-                }
-                timer = null;
-            }, 500);
-        }, 300);
+        new TWEEN.Tween(position)
+            .to({x: 0, y: 0, z: -0.1}, 300)
+            .onComplete(() => {
+                new TWEEN.Tween(position)
+                    .onComplete(() => {
+                        if (onClick) {
+                            onClick();
+                        }
+                    })
+                    .to({x: 0, y: 0, z: 0}, 300)
+                    .start();
+            })
+            .start();
     }
 }
