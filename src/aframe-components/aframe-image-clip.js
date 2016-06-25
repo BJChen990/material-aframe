@@ -24,8 +24,6 @@ AFRAME.registerComponent('image-clip', {
 
     update() {
         this._image = new THREE.TextureLoader().load(this.data.src, this._listeners.imageLoad);
-
-
         const el = this.el;
         const elGeometry = el.getComputedAttribute('geometry');
         const clippingPlanes = getCircularClippingPlanes(el.object3DMap.mesh);
@@ -44,11 +42,11 @@ AFRAME.registerComponent('image-clip', {
 
     _handleImageLoad: function() {
         const circleMaterial = new THREE.MeshBasicMaterial({
-            color: 'white',
             map: this._image,
             clippingPlanes: getCircularClippingPlanes(this.el.object3DMap.mesh)
         });
         this.mesh.material = circleMaterial;
+        this.mesh.material.needsUpdate = true;
     },
 
     _handleSceneLoad: function() {

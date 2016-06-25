@@ -1,5 +1,4 @@
 import React from 'react';
-require('../aframe-components/aframe-image-clip');
 
 export default class AnAvatar extends React.Component {
 

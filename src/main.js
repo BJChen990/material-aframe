@@ -6,6 +6,7 @@ require('./aframe-components/aframe-click-cursor');
 require('./aframe-components/aframe-ripple');
 require('./aframe-components/aframe-shadow');
 require('./aframe-components/aframe-svg');
+require('./aframe-components/aframe-image-clip');
 
 export AFloatingActionButton from './AButtons/AFloatingActionButton.react';
 export ARaisedButton from './AButtons/ARaisedButton.react';
@@ -21,5 +22,7 @@ export ACardHeader from './ACard/ACardHeader.react';
 export AnAvatar from './AnAvatar/AnAvatar.react';
 export AnEnterEffect from './AnEffects/AnEnterEffect.react';
 export AnExitEffect from './AnEffects/AnExitEffect.react';
+export AHalfDomePlayer from './AVideoPlayer/AHalfDomePlayer.react';
 
-export ACursor from './components/ACursor.react';
+export ACamera from './ACamera/ACamera.react';
+export ACursor from './ACamera/ACursor.react';

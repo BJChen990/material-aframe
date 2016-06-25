@@ -32,6 +32,19 @@ export default class ACard extends React.Component {
         text: 'This is a test textField to test card.\n Do not forget to test.'
     }
 
+    static childContextTypes = {
+        cardWidth: React.PropTypes.number
+    }
+
+    getChildContext() {
+        const props = this.props;
+
+        return {
+            cardWidth: props.width,
+            cardBackgroundColor: props.backgroundColor
+        };
+    }
+
     constructor(props) {
         super(props);
         this._height = 0;
@@ -109,7 +122,6 @@ export default class ACard extends React.Component {
                 newChildren.push(
                     React.cloneElement(currentChild, {
                         key: 'media',
-                        width: this.props.width,
                         position: `0 ${-this._height - this.props.width * 0.5} 0.005`
                     })
                 );

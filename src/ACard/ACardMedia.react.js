@@ -11,23 +11,25 @@ let __instance = 0;
 export default class ACardMedia extends React.Component {
 
     static propTypes = {
-        width: React.PropTypes.number,
         videoSrc: React.PropTypes.string,
         imageSrc: React.PropTypes.string
     }
 
-    constructor(props) {
-        super(props);
+    static contextTypes = {
+        cardWidth: React.PropTypes.number
+    }
+
+    constructor(props, context) {
+        super(props, context);
         this.state = {
             instanceId: ++__instance,
-            mediaHeight: props.width,
+            mediaHeight: context.cardWidth,
             mediaIdSrc: null
         };
     }
 
     render() {
         const {
-            width,
             videoSrc,
             imageSrc,
             ...others
@@ -40,7 +42,7 @@ export default class ACardMedia extends React.Component {
 
         return (
             <a-entity
-                geometry={`primitive: plane; width: ${width}; height: ${mediaHeight};`}
+                geometry={`primitive: plane; width: ${this.context.cardWidth}; height: ${mediaHeight};`}
                 material={`color: white; ${mediaIdSrc ? `src: #${mediaIdSrc}` : ''}`}
                 {...others}
             >

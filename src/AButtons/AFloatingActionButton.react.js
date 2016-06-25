@@ -38,7 +38,7 @@ export default class AFloatingActionButton extends AbstractFloatingButton {
                 ref='button'
                 clickable={true}
                 geometry={`primitive: circle; radius: ${buttonRadius}`}
-                material={`color: ${backgroundColor}; shader: flat;`}
+                material={`color: ${backgroundColor}; shader: flat; side: double;`}
                 araisedcanvas={`width: ${canvasSize}; height: ${canvasSize};`}
                 shadow='src: /images/radial-gradient.png; scaleX: 1.2; scaleY: 1.2;'
                 svg={`path: ${iconSrc}; color: ${iconColor}`}
