@@ -1,7 +1,13 @@
 import React from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import Constants from '../constants';
 import TextUtil from '../utils/TextUtil';
 import TextBlock from '../models/TextBlock';
+const {
+    PIXEL_TO_CANVAS_PIXEL,
+    PIXEL_TO_METER,
+    TextBlockTextType
+} = Constants;
 
 const AvatarSize = 40;
 const Padding = 16;
@@ -21,37 +27,45 @@ export default class ACardHeader extends React.Component {
         children: ''
     }
 
+    static contextTypes = {
+        cardWidth: React.PropTypes.number
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return shallowCompare(this, nextProps, nextState, nextContext);
+    }
+
     render() {
         const {
-            width,
             height,
             avatar,
             title,
             subtitle,
             ...others
         } = this.props;
-        const avatarPosition = -width * 0.5 + (16 + 0.5 * AvatarSize) * Constants.PIXEL_TO_METER;
+        const width = this.context.cardWidth;
+        const avatarPosition = -width * 0.5 + (16 + 0.5 * AvatarSize) * PIXEL_TO_METER;
 
         const newAvatar = React.cloneElement(avatar, {
             position: `${avatarPosition} 0 0.001`,
             radius: Constants.PIXEL_TO_METER * AvatarSize * 0.5
         });
 
-        const textWidth = width - ((16 + AvatarSize) * Constants.PIXEL_TO_METER);
+        const textWidth = width - ((16 + AvatarSize) * PIXEL_TO_METER);
         const textPosition = width * 0.5 - textWidth * 0.5;
-        const cardHeaderCanvasPadding = Padding * Constants.PIXEL_TO_CANVAS_PIXEL;
+        const cardHeaderCanvasPadding = Padding * PIXEL_TO_CANVAS_PIXEL;
         const textBlock = new TextBlock(
             TextUtil.getCanvas().getContext('2d'),
             this.props.width * 360,
             {
                 verticalPadding: cardHeaderCanvasPadding,
                 horizontalPadding: cardHeaderCanvasPadding,
-                titleFontSize: 16 * Constants.PIXEL_TO_CANVAS_PIXEL,
-                subtitleFontSize: 16 * Constants.PIXEL_TO_CANVAS_PIXEL
+                titleFontSize: 16 * PIXEL_TO_CANVAS_PIXEL,
+                subtitleFontSize: 16 * PIXEL_TO_CANVAS_PIXEL
             }
         );
-        textBlock.pushText(title, Constants.TextBlockTextType.TITLE);
-        textBlock.pushText(subtitle, Constants.TextBlockTextType.SUBTITLE);
+        textBlock.pushText(title, TextBlockTextType.TITLE);
+        textBlock.pushText(subtitle, TextBlockTextType.SUBTITLE);
 
         return (
             <a-entity

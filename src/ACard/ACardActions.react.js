@@ -1,4 +1,6 @@
 import React from 'react';
+import Constants from '../constants';
+const PIXEL_TO_METER = Constants.PIXEL_TO_METER;
 
 export default class ACardActions extends React.Component {
 
@@ -9,11 +11,33 @@ export default class ACardActions extends React.Component {
         width: React.PropTypes.number
     }
 
+    static contextTypes = {
+        cardWidth: React.PropTypes.number
+    }
+
+    static preprocessComponent(component) {
+        const {children} = component.props;
+        if (!children) {
+            return [];
+        }
+        else if (!Array.isArray(children)) {
+            return [8 * PIXEL_TO_METER + 0.97 * 0.5];
+        }
+
+        const length = children.length;
+        const positions = [];
+        let xPosition = 8 * PIXEL_TO_METER + 0.97 * 0.5;
+
+        for (let i = 0; i < length; i++) {
+            positions.push(xPosition);
+            xPosition += 8 * PIXEL_TO_METER + 0.97;
+        }
+        return positions;
+    }
+
     _processChildren(children) {
-        const {
-            positions,
-            width
-        } = this.props;
+        const positions = this.props.positions;
+        const width = this.context.cardWidth;
         let mChildren = children;
         if (!children) {
             return null;
@@ -38,11 +62,11 @@ export default class ACardActions extends React.Component {
 
     render() {
         const {
-            width,
             height,
             children,
             ...others
         } = this.props;
+        const width = this.context.cardWidth;
         const newChildren = this._processChildren(children);
 
         return (
