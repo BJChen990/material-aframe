@@ -1,14 +1,19 @@
 import React from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import FunctionUtil from '../utils/FunctionUtil';
 
-export default class Indicator extends React.Component {
+export default class AnVideoProgressBar extends React.Component {
 
     static propTypes = {
         position: React.PropTypes.string,
         width: React.PropTypes.number,
-        currentTime: React.PropTypes.number,
         duration: React.PropTypes.number
     };
+
+    static contextTypes = {
+        onSeekToTime: React.PropTypes.func,
+        currentTime: React.PropTypes.number,
+        duration: React.PropTypes.number
+    }
 
     componentDidMount() {
         this.refs.progressBar.addEventListener('cursor-click', this._handleChangeTime);
@@ -18,24 +23,24 @@ export default class Indicator extends React.Component {
         this.refs.progressBar.removeEventListener('cursor-click', this._handleChangeTime);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState);
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return FunctionUtil.contextShallowCompare(this, nextProps, nextState, nextContext);
     }
 
     _handleChangeTime = (event) => {
         const props = this.props;
+        const context = this.context;
         const width = props.width;
         const percentage = (event.detail.intersectInfo.intersections[0].point.x + width * 0.5) / width;
-        props.onSeekToTime(Math.floor(percentage * props.duration));
+        context.onSeekToTime(Math.floor(percentage * context.duration));
     }
 
     render() {
         const {
             width,
-            duration,
-            currentTime,
             ...others
         } = this.props;
+        const context = this.context;
 
         return (
             <a-entity {...others}>
@@ -49,7 +54,7 @@ export default class Indicator extends React.Component {
                     selectable='true'
                 />
                 <a-sphere
-                    position={`${(currentTime / duration - 0.5) * width} 0 0`}
+                    position={`${(context.currentTime / context.duration - 0.5) * width} 0 0`}
                     radius='0.07'
                     color='#FFFFFF'
                 />

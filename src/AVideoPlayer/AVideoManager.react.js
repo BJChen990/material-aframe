@@ -3,7 +3,7 @@ import React from 'react';
 const MIME_VIDEO_CODEC = 'video/mp4; codecs="avc1.640029"';
 const MIME_AUDIO_CODEC = 'audio/mp4; codecs="mp4a.40.2"';
 
-const fileName = 'namjojojuliasamanthachad_smartphonevr60'; // debug use
+const fileName = 'namelsakatetalibrad_180x180_3dh'; // debug use
 
 export default (OriginalVideoPlayer) => class extends React.Component {
 
@@ -27,7 +27,6 @@ export default (OriginalVideoPlayer) => class extends React.Component {
         this._duration = null;
         this._fetchFlag = false;
         this.mediaSource = new MediaSource();
-        console.log(this.mediaSource);
         this._src = URL.createObjectURL(this.mediaSource);
     }
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import Indicator from './Indicator.react';
-import AFloatingActionButton from '../AButtons/AFloatingActionButton.react';
+import AnVideoProgressBar from './AnVideoProgressBar.react';
+import AVideoControlPanelButtons from './AVideoControlPanelButtons.react';
 
 const THRESHOLD = 7.0;
 
-export default class ControlPanel extends React.Component {
+export default class AVideoControlPanel extends React.Component {
 
     static propTypes = {
         position: React.PropTypes.string,
@@ -42,23 +42,21 @@ export default class ControlPanel extends React.Component {
     }
 
     render() {
+        const props = this.props;
+        const position = props.position;
+
         return (
             <a-entity
                 ref='root'
-                position={this.props.position}
+                position={position}
                 stereo='eye: both; isVideo: false;'
             >
-                <AFloatingActionButton
-                    iconSrc="/images/ic_favorite_black_24px.svg"
-                    onClick={this._handleTogglePlay}
-                    position="0 0 0.5"
-                />
-                <Indicator
+                <AVideoControlPanelButtons />
+                <AnVideoProgressBar
                     position='0 -0.5 0'
                     width={3}
-                    onSeekToTime={this.props.onSeekToTime}
-                    currentTime={this.props.currentTime}
-                    duration={this.props.duration}
+                    currentTime={props.currentTime}
+                    duration={props.duration}
                 />
                 <a-animation
                     begin='toggleHide'
@@ -72,7 +70,7 @@ export default class ControlPanel extends React.Component {
                     attribute='position'
                     dur='500'
                     fill='forwards'
-                    to={this.props.position}
+                    to={position}
                 />
             </a-entity>
         );
