@@ -1,13 +1,13 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import AbstractFlatButton from './AbstractFlatButton.react';
 
 export default class AFlatButton extends AbstractFlatButton {
 
     static propTypes = {
         ...AbstractFlatButton.propTypes,
-        width: PropTypes.number,
-        text: PropTypes.string,
-        fontColor: PropTypes.string
+        width: React.PropTypes.number,
+        text: React.PropTypes.string,
+        fontColor: React.PropTypes.string
     }
 
     static defaultProps = {

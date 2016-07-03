@@ -27,6 +27,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.9.0",
+    "canvg-client": "0.0.1",
     "eslint": "^2.11.0",
     "eslint-plugin-react": "^5.1.1",
     "gulp": "^3.9.1",
@@ -37,7 +38,6 @@
   "dependencies": {
     "aframe-stereo-component": "^0.2.0",
     "linebreak": "^0.3.0",
-    "load-svg": "^1.0.0",
     "react-addons-shallow-compare": "^15.1.0"
   }
 }

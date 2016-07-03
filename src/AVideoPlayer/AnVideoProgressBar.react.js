@@ -6,13 +6,12 @@ export default class AnVideoProgressBar extends React.Component {
     static propTypes = {
         position: React.PropTypes.string,
         width: React.PropTypes.number,
-        duration: React.PropTypes.number
+        duration: React.PropTypes.number,
+        currentTime: React.PropTypes.number
     };
 
     static contextTypes = {
-        onSeekToTime: React.PropTypes.func,
-        currentTime: React.PropTypes.number,
-        duration: React.PropTypes.number
+        onSeekToTime: React.PropTypes.func
     }
 
     componentDidMount() {
@@ -28,19 +27,21 @@ export default class AnVideoProgressBar extends React.Component {
     }
 
     _handleChangeTime = (event) => {
-        const props = this.props;
-        const context = this.context;
-        const width = props.width;
+        const {
+            duration,
+            width
+        } = this.props;
         const percentage = (event.detail.intersectInfo.intersections[0].point.x + width * 0.5) / width;
-        context.onSeekToTime(Math.floor(percentage * context.duration));
+        this.context.onSeekToTime(Math.floor(percentage * duration));
     }
 
     render() {
         const {
             width,
+            currentTime,
+            duration,
             ...others
         } = this.props;
-        const context = this.context;
 
         return (
             <a-entity {...others}>
@@ -54,7 +55,7 @@ export default class AnVideoProgressBar extends React.Component {
                     selectable='true'
                 />
                 <a-sphere
-                    position={`${(context.currentTime / context.duration - 0.5) * width} 0 0`}
+                    position={`${((currentTime / duration) - 0.5) * width} 0 0`}
                     radius='0.07'
                     color='#FFFFFF'
                 />

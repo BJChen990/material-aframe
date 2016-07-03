@@ -1,4 +1,4 @@
-import loadSvg from 'load-svg';
+import canvg from 'canvg-client';
 
 window.AFRAME.registerComponent('svg', {
     schema: {
@@ -11,42 +11,22 @@ window.AFRAME.registerComponent('svg', {
     init: function() {
         this.draw = this.el.components.araisedcanvas;
         this.draw.register(this.renderFunction.bind(this));
-        this.path = null;
+        this._path = null;
     },
 
     update: function() {
-        loadSvg(this.data.path, (err, svg) => {
-            if (err) {
-                throw err;
-            }
-
-            var svgWidth = svg.getAttribute('width');
-            this.scale = this.draw.canvas.width / svgWidth;
-            var paths = svg.querySelectorAll('path');
-            var pathLength = paths.length;
-            this.paths = [];
-
-            for (var i = 0; i < pathLength; i++) {
-                if (paths[i].getAttribute('fill') !== 'none') {
-                    this.paths.push(new Path2D(paths[i].getAttribute('d')));
-                }
-            }
-            this.draw.render();
-        });
+        fetch(this.data.path)
+            .then((respnose) => {
+                return respnose.text();
+            })
+            .then((svgString) => {
+                this._path = svgString;
+                this.draw.render();
+            });
     },
 
     renderFunction: function() {
-        var ctx = this.draw.ctx;
-        ctx.fillStyle = this.data.color;
-
-        ctx.save();
-        ctx.scale(this.scale, this.scale);
-        var paths = this.paths;
-        var pathLength = paths.length;
-
-        for (var i = 0; i < pathLength; i++) {
-            ctx.fill(paths[i]);
-        }
-        ctx.restore();
+        const canvas = this.draw.canvas;
+        canvg(canvas, this._path);
     }
 });

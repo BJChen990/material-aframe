@@ -34,7 +34,7 @@ AFRAME.registerComponent('cursor-raycaster', {
 
         this.mutationObserver.observe(this.el.sceneEl, {
             childList: true,
-            subtree: false
+            subtree: true
         });
     },
 

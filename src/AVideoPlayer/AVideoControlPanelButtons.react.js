@@ -6,8 +6,11 @@ const {PIXEL_TO_METER} = Constants;
 
 export default class AVideoControlPanelButtons extends React.Component {
 
+    static propTypes = {
+        currentState: React.PropTypes.string
+    }
+
     static contextTypes = {
-        currentState: React.PropTypes.string,
         onSetPlay: React.PropTypes.func,
         onSetPause: React.PropTypes.func,
         onSetForward: React.PropTypes.func,
@@ -24,7 +27,7 @@ export default class AVideoControlPanelButtons extends React.Component {
             <AnIconButton
                 iconSrc="/images/pause.svg"
                 onClick={this.context.onSetPause}
-                position="-2 0 0.5"
+                position="-1.4 0 0.01"
             />
         );
     }
@@ -34,7 +37,7 @@ export default class AVideoControlPanelButtons extends React.Component {
             <AnIconButton
                 iconSrc="/images/play.svg"
                 onClick={this.context.onSetPlay}
-                position="-2 0 0.01"
+                position="-1.4 0 0.01"
             />
         );
     }
@@ -44,7 +47,7 @@ export default class AVideoControlPanelButtons extends React.Component {
             <AnIconButton
                 iconSrc="/images/sync.svg"
                 onClick={this._handleTogglePlay}
-                position="-2 0 0.01"
+                position="-1.4 0 0.01"
             />
         );
     }
@@ -69,7 +72,7 @@ export default class AVideoControlPanelButtons extends React.Component {
     }
 
     render() {
-        const currentState = this.context.currentState;
+        const currentState = this.props.currentState;
         let playControlButton;
 
         switch (currentState) {
@@ -82,18 +85,21 @@ export default class AVideoControlPanelButtons extends React.Component {
         case 'pending':
             playControlButton = this.renderPendingState();
             break;
+        default:
+            playControlButton = this.renderPlayState();
         }
 
         return (
             <a-entity
-                geometry={`primitive: roundedrect; width: ${6}; height: ${72 * PIXEL_TO_METER}; radius: 0.02;`}
+                geometry={`primitive: roundedrect; width: ${4}; height: ${72 * PIXEL_TO_METER}; radius: 0.02;`}
                 material='color: #fafafa;'
+                {...this.props}
             >
                 {playControlButton}
                 <AnIconButton
                     iconSrc="/images/forward5.svg"
                     onClick={this._handleForward5}
-                    position="-1 0 0.01"
+                    position="-0.7 0 0.01"
                 />
                 <AnIconButton
                     iconSrc="/images/forward10.svg"
@@ -103,12 +109,12 @@ export default class AVideoControlPanelButtons extends React.Component {
                 <AnIconButton
                     iconSrc="/images/forward30.svg"
                     onClick={this._handleForward30}
-                    position="1 0 0.01"
+                    position="0.7 0 0.01"
                 />
                 <AnIconButton
                     iconSrc="/images/apps.svg"
                     onClick={this._handleBackButtonClick}
-                    position="2 0 0.01"
+                    position="1.4 0 0.01"
                 />
             </a-entity>
         );

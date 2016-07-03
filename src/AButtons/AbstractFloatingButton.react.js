@@ -6,13 +6,19 @@ export default class AbstractFloatingButton extends React.Component {
     static propTypes = {
         backgroundColor: React.PropTypes.string,
         colorChangeRate: React.PropTypes.number,
-        onClick: React.PropTypes.func
+        onClick: React.PropTypes.func,
+        exitEffect: React.PropTypes.func
     }
 
     static defaultProps = {
         backgroundColor: '#fafafa',
         colorChangeRate: 1,
         onClick: null
+    }
+
+    constructor(props) {
+        super(props);
+        this._leaved = false;
     }
 
     componentWillMount() {
@@ -49,18 +55,34 @@ export default class AbstractFloatingButton extends React.Component {
         this.refs.button.removeEventListener('cursor-click', this._handleClick);
     }
 
+    _click = () => {
+        if (this._leaved) {
+            return;
+        }
+        this._leaved = true;
+
+        const onClick = this.props.onClick;
+        if (onClick) {
+            onClick();
+        }
+    }
+
     _handleClick = () => {
         const position = this.refs.button.object3DMap.mesh.position;
-        const onClick = this.props.onClick;
+        const exitEffect = this.props.exitEffect;
 
         new TWEEN.Tween(position)
             .to({x: 0, y: 0, z: -0.1}, 300)
             .onComplete(() => {
                 new TWEEN.Tween(position)
                     .onComplete(() => {
-                        if (onClick) {
-                            onClick();
+                        if (exitEffect) {
+                            return exitEffect(() => {
+                                this._click();
+                            });
                         }
+
+                        this._click();
                     })
                     .to({x: 0, y: 0, z: 0}, 300)
                     .start();

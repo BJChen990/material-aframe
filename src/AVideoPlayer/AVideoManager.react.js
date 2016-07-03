@@ -3,12 +3,10 @@ import React from 'react';
 const MIME_VIDEO_CODEC = 'video/mp4; codecs="avc1.640029"';
 const MIME_AUDIO_CODEC = 'audio/mp4; codecs="mp4a.40.2"';
 
-const fileName = 'namelsakatetalibrad_180x180_3dh'; // debug use
-
 export default (OriginalVideoPlayer) => class extends React.Component {
 
     static propTypes = {
-        params: React.PropTypes.object
+        fileName: React.PropTypes.string
     }
 
     constructor(props) {
@@ -58,14 +56,14 @@ export default (OriginalVideoPlayer) => class extends React.Component {
     }
 
     _getVideoInit = () => {
-        return fetch(`/video/${fileName}/init/video`)
+        return fetch(`/video/${this.props.fileName}/init/video`)
             .then((response) => {
                 return response.arrayBuffer();
             });
     }
 
     _getAudioInit = () => {
-        return fetch(`/video/${fileName}/init/audio`)
+        return fetch(`/video/${this.props.fileName}/init/audio`)
             .then((response) => {
                 return response.arrayBuffer();
             });
@@ -100,7 +98,7 @@ export default (OriginalVideoPlayer) => class extends React.Component {
 
     _getVideoInfoPromise() {
         return new Promise((resolve, reject) => {
-            fetch(`/video/${fileName}/info`)
+            fetch(`/video/${this.props.fileName}/info`)
                 .then((response) => {
                     return response.json();
                 })
@@ -117,7 +115,7 @@ export default (OriginalVideoPlayer) => class extends React.Component {
 
     _fetchVideoSegment = (segment) => {
         return new Promise((resolve, reject) => {
-            fetch(`/video/${fileName}/data/video/${segment + 1}`)
+            fetch(`/video/${this.props.fileName}/data/video/${segment + 1}`)
             .then((response) => {
                 return response.arrayBuffer();
             })
@@ -146,7 +144,7 @@ export default (OriginalVideoPlayer) => class extends React.Component {
 
     _fetchAudioSegment = (segment) => {
         return new Promise((resolve, reject) => {
-            fetch(`/video/${fileName}/data/audio/${segment + 1}`)
+            fetch(`/video/${this.props.fileName}/data/audio/${segment + 1}`)
             .then((response) => {
                 return response.arrayBuffer();
             })

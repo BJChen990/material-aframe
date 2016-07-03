@@ -1,5 +1,5 @@
 import React from 'react';
-import AVideoManager from './AVideoManager.react';
+import FunctionUtil from '../utils/FunctionUtil';
 import AVideoControlPanel from './AVideoControlPanel.react';
 import AHalfDomePlayerScreen from './AHalfDomePlayerScreen.react';
 require('../aframe-components/aframe-stereo-component');
@@ -15,7 +15,7 @@ const PlayerState = {
 };
 
 
-class AHalfDomePlayer extends React.Component {
+export default class AHalfDomePlayer extends React.Component {
 
     static propTypes = {
         src: React.PropTypes.string,
@@ -24,9 +24,6 @@ class AHalfDomePlayer extends React.Component {
     }
 
     static childContextTypes = {
-        currentTime: React.PropTypes.number,
-        currentState: React.PropTypes.string,
-        duration: React.PropTypes.number,
         onSeekToTime: React.PropTypes.func,
         onSetPlay: React.PropTypes.func,
         onSetPause: React.PropTypes.func,
@@ -34,16 +31,11 @@ class AHalfDomePlayer extends React.Component {
     }
 
     getChildContext() {
-        const state = this.state;
-
         return {
             onSetPlay: this._handleSetPlay,
             onSetPause: this._handleSetPause,
             onSetForward: this._handleSetForward,
-            onSeekToTime: this._handleSeekToTime,
-            currentState: state.state,
-            currentTime: state.currentTime,
-            duration: state.duration
+            onSeekToTime: this._handleSeekToTime
         };
     }
 
@@ -57,13 +49,27 @@ class AHalfDomePlayer extends React.Component {
         };
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return FunctionUtil.contextShallowCompare(this, nextProps, nextState, nextContext);
+    }
+
     render() {
         const videoId = this.videoId;
+        const {
+            currentState,
+            currentTime,
+            duration
+        } = this.state;
 
         return (
             <a-entity>
-                <AHalfDomePlayerScreen videoId={videoId} />
+                <AHalfDomePlayerScreen
+                    videoId={videoId}
+                />
                 <AVideoControlPanel
+                    currentState={currentState}
+                    currentTime={currentTime}
+                    duration={duration}
                     position="0 0 -4"
                     width={5}
                 />
@@ -140,5 +146,3 @@ class AHalfDomePlayer extends React.Component {
         });
     }
 }
-
-export default AVideoManager(AHalfDomePlayer);

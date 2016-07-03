@@ -1,6 +1,7 @@
 import React from 'react';
 import AnVideoProgressBar from './AnVideoProgressBar.react';
 import AVideoControlPanelButtons from './AVideoControlPanelButtons.react';
+import FunctionUtil from '../utils/FunctionUtil';
 
 const THRESHOLD = 7.0;
 
@@ -10,7 +11,8 @@ export default class AVideoControlPanel extends React.Component {
         position: React.PropTypes.string,
         width: React.PropTypes.number,
         duration: React.PropTypes.number,
-        currentTime: React.PropTypes.number
+        currentTime: React.PropTypes.number,
+        currentState: React.PropTypes.string
     }
 
     constructor(props) {
@@ -25,6 +27,10 @@ export default class AVideoControlPanel extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener('devicemotion', this._handleGravity);
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return FunctionUtil.contextShallowCompare(this, nextProps, nextState, nextContext);
     }
 
     _handleGravity = (event) => {
@@ -42,8 +48,12 @@ export default class AVideoControlPanel extends React.Component {
     }
 
     render() {
-        const props = this.props;
-        const position = props.position;
+        const {
+            currentTime,
+            position,
+            duration,
+            currentState
+        } = this.props;
 
         return (
             <a-entity
@@ -51,12 +61,15 @@ export default class AVideoControlPanel extends React.Component {
                 position={position}
                 stereo='eye: both; isVideo: false;'
             >
-                <AVideoControlPanelButtons />
+                <AVideoControlPanelButtons
+                    position="0 0.5 0"
+                    currentState={currentState}
+                />
                 <AnVideoProgressBar
                     position='0 -0.5 0'
                     width={3}
-                    currentTime={props.currentTime}
-                    duration={props.duration}
+                    currentTime={currentTime}
+                    duration={duration}
                 />
                 <a-animation
                     begin='toggleHide'

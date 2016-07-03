@@ -6,13 +6,19 @@ export default class AbstractFlatButton extends React.Component {
     static propTypes = {
         backgroundColor: React.PropTypes.string,
         colorChangeRate: React.PropTypes.number,
-        onClick: React.PropTypes.func
+        onClick: React.PropTypes.func,
+        exitEffect: React.PropTypes.func
     }
 
     static defaultProps = {
         backgroundColor: '#fafafa',
         colorChangeRate: 1,
         onClick: null
+    }
+
+    constructor(props) {
+        super(props);
+        this._leaved = false;
     }
 
     componentWillMount() {
@@ -49,13 +55,29 @@ export default class AbstractFlatButton extends React.Component {
         this.refs.button.removeEventListener('cursor-click', this._handleClick);
     }
 
-    _handleClick = () => {
+    _click = () => {
+        if (this._leaved) {
+            return;
+        }
+        this._leaved = true;
+
         const onClick = this.props.onClick;
+        if (onClick) {
+            onClick();
+        }
+    }
+
+    _handleClick = () => {
+        const exitEffect = this.props.exitEffect;
 
         setTimeout(() => {
-            if (onClick) {
-                onClick();
+            if (exitEffect) {
+                return exitEffect(() => {
+                    this._click();
+                });
             }
+
+            this._click();
         }, 600);
     }
 }
