@@ -7,6 +7,8 @@ require('./aframe-components/aframe-ripple');
 require('./aframe-components/aframe-shadow');
 require('./aframe-components/aframe-svg');
 require('./aframe-components/aframe-image-clip');
+require('./aframe-components/aframe-image-load');
+
 
 export ALinkButton from './AButtons/ALinkButton.react';
 export AFloatingActionButton from './AButtons/AFloatingActionButton.react';

@@ -25,8 +25,8 @@ export default class ACardTitle extends React.Component {
     }
 
     static defaultProps = {
-        title: null,
-        subtitle: null
+        title: '',
+        subtitle: ''
     }
 
     static contextTypes = {

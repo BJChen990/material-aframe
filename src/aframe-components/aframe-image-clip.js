@@ -1,8 +1,8 @@
-var AFRAME = window.AFRAME;
-var THREE = AFRAME.THREE;
+import ImageUtil from '../utils/ImageUtil';
+const AFRAME = window.AFRAME;
+const THREE = AFRAME.THREE;
 
 AFRAME.registerComponent('image-clip', {
-
     schema: {
         src: { default: '' }
     },
@@ -12,7 +12,7 @@ AFRAME.registerComponent('image-clip', {
             sceneLoad: this._handleSceneLoad.bind(this),
             imageLoad: this._handleImageLoad.bind(this)
         };
-        this._image = null;
+        this._texture = null;
 
         var scene = this.el.sceneEl;
         if (scene.hasLoaded) {
@@ -22,16 +22,38 @@ AFRAME.registerComponent('image-clip', {
         }
     },
 
+    _getWorldClippingPlane: function() {
+        const localPlanes = this._localPlanes;
+        const worldMatrix = this.el.object3DMap.mesh.matrixWorld;
+        const globalPlanes = [];
+        const planeLength = localPlanes.length;
+
+        for (let i = 0; i < planeLength; i++) {
+            globalPlanes.push(new THREE.Plane().copy(localPlanes[i]).applyMatrix4(worldMatrix));
+        }
+
+        return globalPlanes;
+    },
+
     update() {
-        this._image = new THREE.TextureLoader().load(this.data.src, this._listeners.imageLoad);
         const el = this.el;
         const elGeometry = el.getComputedAttribute('geometry');
-        const clippingPlanes = getCircularClippingPlanes(el.object3DMap.mesh);
+        this._localPlanes = getCircularClippingPlanes(el.object3DMap.mesh);
+        const options = {
+            clippingPlanes: this._getWorldClippingPlane()
+        };
         const circleGeometry = new THREE.PlaneBufferGeometry(elGeometry.radius * 2, elGeometry.radius * 2);
-        const circleMaterial = new THREE.MeshBasicMaterial({
-            color: 'black',
-            clippingPlanes: clippingPlanes
-        });
+        const imageSrc = this.data.src;
+        const texture = ImageUtil.getCachedTexture(imageSrc);
+        if (!texture) {
+            ImageUtil.loadImage(this.data.src, this._listeners.imageLoad);
+            options.color = 'black';
+        }
+        else {
+            options.map = texture;
+        }
+
+        const circleMaterial = new THREE.MeshBasicMaterial(options);
 
         const mesh = new THREE.Mesh(circleGeometry, circleMaterial);
         mesh.el = el;
@@ -40,13 +62,35 @@ AFRAME.registerComponent('image-clip', {
         this.mesh = mesh;
     },
 
-    _handleImageLoad: function() {
+    tick: function() {
+        const lastPosition = this._lastPosition;
+        const worldPosition = this.el.object3D.getWorldPosition();
+
+        if (
+            lastPosition &&
+            (this._lastPosition.x === worldPosition.x) &&
+            (this._lastPosition.y === worldPosition.y) &&
+            (this._lastPosition.z === worldPosition.z)
+        ) {
+            return;
+        }
+
         const circleMaterial = new THREE.MeshBasicMaterial({
-            map: this._image,
-            clippingPlanes: getCircularClippingPlanes(this.el.object3DMap.mesh)
+            map: this._texture,
+            clippingPlanes: this._getWorldClippingPlane()
         });
-        this.mesh.material = circleMaterial;
-        this.mesh.material.needsUpdate = true;
+        const mesh = this.mesh;
+        mesh.material = circleMaterial;
+    },
+
+    _handleImageLoad: function(texture) {
+        this._texture = texture;
+        const circleMaterial = new THREE.MeshBasicMaterial({
+            map: texture,
+            clippingPlanes: this._getWorldClippingPlane()
+        });
+        const mesh = this.mesh;
+        mesh.material = circleMaterial;
     },
 
     _handleSceneLoad: function() {
@@ -62,7 +106,12 @@ AFRAME.registerComponent('image-clip', {
 function getCircularClippingPlanes(obj) {
     const positionArray = obj.geometry.attributes.position.array;
     const counts = positionArray.length;
-    const matrixWorld = obj.matrixWorld;
+
+    let parent = obj.parent;
+    while (parent) {
+        parent.getWorldPosition();
+        parent = parent.parent;
+    }
     const planes = [];
     const orthoVector = new THREE.Vector3(0, 0, 1);
 
@@ -71,7 +120,6 @@ function getCircularClippingPlanes(obj) {
         var secondPoint = new THREE.Vector3(positionArray[i + 3], positionArray[i + 4], positionArray[i + 5]);
         var thirdPoint = new THREE.Vector3().addVectors(firstPoint, orthoVector);
         var plane = new THREE.Plane().setFromCoplanarPoints(secondPoint, firstPoint, thirdPoint);
-        plane.applyMatrix4(matrixWorld);
         planes.push(plane);
     }
 
