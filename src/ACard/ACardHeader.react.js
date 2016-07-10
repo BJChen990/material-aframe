@@ -28,7 +28,9 @@ export default class ACardHeader extends React.Component {
     }
 
     static contextTypes = {
-        cardWidth: React.PropTypes.number
+        cardWidth: React.PropTypes.number,
+        cardBackgroundColor: React.PropTypes.string,
+        cardTextColor: React.PropTypes.string
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -70,15 +72,15 @@ export default class ACardHeader extends React.Component {
         return (
             <a-entity
                 geometry={`primitive: plane; width: ${width}; height: ${height};`}
-                material={'color: #fafafa;'}
+                material={`color: ${this.context.cardBackgroundColor};`}
                 {...others}
             >
                 {newAvatar}
                 <a-entity
                     geometry={`primitive: plane; width: ${textWidth}; height: ${height};`}
-                    material={'color: #fafafa;'}
+                    material={`color: ${this.context.cardBackgroundColor};`}
                     araisedcanvas={`width: ${textWidth * 360}; height: ${height * 360};`}
-                    text2d={`textJson: ${JSON.stringify(textBlock.toJS())};`}
+                    text2d={`textJson: ${JSON.stringify(textBlock.toJS())}; color: ${this.context.cardTextColor}`}
                     position={`${textPosition} 0 0.001`}
                 />
             </a-entity>

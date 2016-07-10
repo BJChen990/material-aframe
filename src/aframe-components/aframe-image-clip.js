@@ -50,6 +50,7 @@ AFRAME.registerComponent('image-clip', {
             options.color = 'black';
         }
         else {
+            this._texture = texture;
             options.map = texture;
         }
 
@@ -75,12 +76,14 @@ AFRAME.registerComponent('image-clip', {
             return;
         }
 
+        this._lastPosition = worldPosition;
         const circleMaterial = new THREE.MeshBasicMaterial({
             map: this._texture,
             clippingPlanes: this._getWorldClippingPlane()
         });
         const mesh = this.mesh;
         mesh.material = circleMaterial;
+        mesh.material.needsUpdate = true;
     },
 
     _handleImageLoad: function(texture) {
@@ -91,6 +94,7 @@ AFRAME.registerComponent('image-clip', {
         });
         const mesh = this.mesh;
         mesh.material = circleMaterial;
+        mesh.material.needsUpdate = true;
     },
 
     _handleSceneLoad: function() {

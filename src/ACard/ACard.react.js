@@ -17,7 +17,7 @@ export default class ACard extends React.Component {
     static propTypes = {
         width: React.PropTypes.number,
         backgroundColor: React.PropTypes.string,
-        text: React.PropTypes.string,
+        textColor: React.PropTypes.string,
         imageUrl: React.PropTypes.string,
         children: React.PropTypes.array
     }
@@ -25,12 +25,13 @@ export default class ACard extends React.Component {
     static defaultProps = {
         width: 3,
         backgroundColor: '#fafafa',
-        text: 'This is a test textField to test card.\n Do not forget to test.'
+        textColor: 'black'
     }
 
     static childContextTypes = {
         cardWidth: React.PropTypes.number,
-        cardBackgroundColor: React.PropTypes.string
+        cardBackgroundColor: React.PropTypes.string,
+        cardTextColor: React.PropTypes.string
     }
 
     getChildContext() {
@@ -38,7 +39,8 @@ export default class ACard extends React.Component {
 
         return {
             cardWidth: props.width,
-            cardBackgroundColor: props.backgroundColor
+            cardBackgroundColor: props.backgroundColor,
+            cardTextColor: props.textColor
         };
     }
 
@@ -150,6 +152,7 @@ export default class ACard extends React.Component {
         const {
             children,
             width,
+            backgroundColor,
             ...others
         } = this.props;
         const newChildren = this._getProcessedChildren(children);
@@ -158,7 +161,7 @@ export default class ACard extends React.Component {
             <a-entity
                 hoverable={true}
                 geometry={`primitive: roundedrect; width: ${width}; height: ${this._height}; radius: 0.02;`}
-                material={'color: #fafafa;'}
+                material={`color: ${backgroundColor};`}
                 shadow='src: /images/shadow.png; scaleX: 1.1; scaleY: 1.1; depth: -0.001; dy: 0; clickEnable: false;'
                 {...others}
             >

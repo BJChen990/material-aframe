@@ -12,7 +12,9 @@ export default class ACardActions extends React.Component {
     }
 
     static contextTypes = {
-        cardWidth: React.PropTypes.number
+        cardWidth: React.PropTypes.number,
+        cardBackgroundColor: React.PropTypes.string,
+        cardTextColor: React.PropTypes.string
     }
 
     static preprocessComponent(component) {
@@ -72,7 +74,7 @@ export default class ACardActions extends React.Component {
         return (
             <a-entity
                 geometry={`primitive: plane; width: ${width}; height: ${height};`}
-                material={'color: #fafafa;'}
+                material={`color: ${this.context.cardBackgroundColor};`}
                 {...others}
             >
                 {newChildren}

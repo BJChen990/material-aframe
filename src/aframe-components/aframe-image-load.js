@@ -11,6 +11,7 @@ AFRAME.registerComponent('image-load', {
         this._listeners = {
             imageLoad: this._handleImageLoad.bind(this)
         };
+        this._texture;
     },
 
     update() {
@@ -24,23 +25,24 @@ AFRAME.registerComponent('image-load', {
             options.color = 'black';
         }
         else {
+            this._texture = texture;
             options.map = texture;
         }
 
         const circleMaterial = new THREE.MeshBasicMaterial(options);
-
-        // const mesh = new THREE.Mesh(circleGeometry, circleMaterial);
-        // mesh.el = el;
-        el.object3DMap.mesh.materail = circleMaterial;
-        // mesh.position.set(0, 0, 0.02);
-        // this.mesh = mesh;
+        const mesh = new THREE.Mesh(el.object3DMap.mesh.geometry, circleMaterial);
+        mesh.el = el;
+        el.object3DMap.mesh.add(mesh);
+        mesh.position.set(0, 0, 0.02);
+        this.mesh = mesh;
     },
 
     _handleImageLoad: function(texture) {
+        this._texture = texture;
         const circleMaterial = new THREE.MeshBasicMaterial({
             map: texture
         });
-        const mesh = this.el.object3DMap.mesh;
+        const mesh = this.mesh;
         mesh.material = circleMaterial;
         mesh.material.needsUpdate = true;
     },

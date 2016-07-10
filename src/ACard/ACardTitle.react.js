@@ -30,7 +30,9 @@ export default class ACardTitle extends React.Component {
     }
 
     static contextTypes = {
-        cardWidth: React.PropTypes.number
+        cardWidth: React.PropTypes.number,
+        cardBackgroundColor: React.PropTypes.string,
+        cardTextColor: React.PropTypes.string
     }
 
     static preprocessComponent(component, width) {
@@ -66,9 +68,9 @@ export default class ACardTitle extends React.Component {
         return (
             <a-entity
                 geometry={`primitive: plane; width: ${cardWidth}; height: ${height};`}
-                material={'color: #fafafa;'}
+                material={`color: ${this.context.cardBackgroundColor};`}
                 araisedcanvas={`width: ${cardWidth * 360}; height: ${height * 360};`}
-                text2d={`textJson: ${JSON.stringify(textJson)};`}
+                text2d={`textJson: ${JSON.stringify(textJson)}; color: ${this.context.cardTextColor}`}
                 {...others}
             />
         );
