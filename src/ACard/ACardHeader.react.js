@@ -80,7 +80,7 @@ export default class ACardHeader extends React.Component {
                     geometry={`primitive: plane; width: ${textWidth}; height: ${height};`}
                     material={`color: ${this.context.cardBackgroundColor};`}
                     araisedcanvas={`width: ${textWidth * 360}; height: ${height * 360};`}
-                    text2d={`textJson: ${JSON.stringify(textBlock.toJS())}; color: ${this.context.cardTextColor}`}
+                    text2d={`textJson: ${JSON.stringify(textBlock.toJS())}; color: ${this.context.cardTextColor}; paddingHorizontal: ${cardHeaderCanvasPadding}; paddingVertical: ${cardHeaderCanvasPadding}`}
                     position={`${textPosition} 0 0.001`}
                 />
             </a-entity>

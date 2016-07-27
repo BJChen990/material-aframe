@@ -92,6 +92,9 @@ AFRAME.registerComponent('cursor-raycaster', {
             for (i = 0; i < intersectionLength; i++) {
                 const intersection = intersections[i];
                 const intersectionEl = intersection.object.el;
+                if (!intersectionEl.hasAttribute('hoverable') && !intersectionEl.hasAttribute('clickable')) {
+                    continue;
+                }
                 intersectedEls.push(intersectionEl);
                 intersectionEl.emit('raycaster-intersected', {el: el, intersection: intersection});
             }

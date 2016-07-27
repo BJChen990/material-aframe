@@ -1,6 +1,7 @@
 import React from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import Constants from '../constants';
+import FunctionUtil from '../utils/FunctionUtil';
 import ACardTitle from './ACardTitle.react';
 import ACardText from './ACardText.react';
 import ACardActions from './ACardActions.react';
@@ -58,15 +59,7 @@ export default class ACard extends React.Component {
     }
 
     _getProcessedChildren(oldChildren) {
-        let children = oldChildren;
-        if (!children) {
-            throw new Error('Currently ACard must has a valid-type children.');
-        }
-
-        // To make function simpler, make a non-array object to array.
-        if (!Array.isArray(children)) {
-            children = [children];
-        }
+        const children = FunctionUtil.listify(oldChildren);
         const childrenLength = children.length;
         let newChildren = [];
 

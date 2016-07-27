@@ -1,4 +1,5 @@
 import React from 'react';
+import ColorUtil from '../utils/ColorUtil';
 const THREE = window.AFRAME.THREE;
 
 export default class AbstractFlatButton extends React.Component {
@@ -22,23 +23,10 @@ export default class AbstractFlatButton extends React.Component {
     }
 
     componentWillMount() {
-        var backgroundColor = new THREE.Color(this.props.backgroundColor);
-        var colorChangeRate = this.props.colorChangeRate;
-        var r = backgroundColor.r * 255 - 26 * colorChangeRate;
-        var g = backgroundColor.g * 255 - 26 * colorChangeRate;
-        var b = backgroundColor.b * 255 - 26 * colorChangeRate;
+        const { backgroundColor, colorChangeRate } = this.props;
+        const threeColor = new THREE.Color(backgroundColor);
 
-        if (r > 255) {
-            r = 255;
-        }
-        if (g > 255) {
-            g = 255;
-        }
-        if (b > 255) {
-            b = 255;
-        }
-
-        this._hoverColor = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+        this._hoverColor = ColorUtil.changeColorWithAmount(threeColor, colorChangeRate);
 
         if (colorChangeRate > 0) {
             this._rippleColor = '#333333';

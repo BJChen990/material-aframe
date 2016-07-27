@@ -8,7 +8,8 @@ require('./aframe-components/aframe-shadow');
 require('./aframe-components/aframe-svg');
 require('./aframe-components/aframe-image-clip');
 require('./aframe-components/aframe-image-load');
-
+import 'aframe-layout-component';
+import './aframe-components/aframe-waterfall-layout';
 
 export ALinkButton from './AButtons/ALinkButton.react';
 export AFloatingActionButton from './AButtons/AFloatingActionButton.react';
@@ -28,6 +29,13 @@ export AnExitEffect from './AnEffects/AnExitEffect.react';
 export AVideoManager from './AVideoPlayer/AVideoManager.react';
 export AHalfDomePlayer from './AVideoPlayer/AHalfDomePlayer.react';
 export AVideoControlPanel from './AVideoPlayer/AVideoControlPanel.react';
+export AList from './AList/AList.react';
+export ASingleLineListItem from './AList/ASingleLineListItem.react';
+export ASingleLineDenseListItem from './AList/ASingleLineDenseListItem.react';
+export ATwoLineListItem from './AList/ATwoLineListItem.react';
+export ATwoLineDenseListItem from './AList/ATwoLineDenseListItem.react';
+export AThreeLineListItem from './AList/AThreeLineListItem.react';
+export AThreeLineDenseListItem from './AList/AThreeLineDenseListItem.react';
 
 export ACamera from './ACamera/ACamera.react';
 export ACursor from './ACamera/ACursor.react';

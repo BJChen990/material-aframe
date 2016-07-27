@@ -3,10 +3,10 @@ const TEXT_SIZE = 56;
 window.AFRAME.registerComponent('text2d', {
     schema: {
         paddingHorizontal: {
-            default: 16 * 4
+            default: 0
         },
         paddingVertical: {
-            default: 16 * 4
+            default: 0
         },
         fontSize: {
             default: TEXT_SIZE
@@ -20,6 +20,9 @@ window.AFRAME.registerComponent('text2d', {
         textAlign: {
             default: 'left'
         },
+        verticalAlign: {
+            default: 'top'
+        },
         textJson: {
             type: 'string'
         }
@@ -30,11 +33,14 @@ window.AFRAME.registerComponent('text2d', {
     init: function() {
         this.draw = this.el.components.araisedcanvas;
         this.draw.register(this.renderFunction.bind(this));
-        this.lines = null;
+        this._lines = null;
+        this._height = null;
     },
 
     update: function() {
-        this.lines = JSON.parse(this.data.textJson).lines;
+        const textInfo = JSON.parse(this.data.textJson);
+        this._lines = textInfo.lines;
+        this._height = textInfo.height;
         this.draw.render();
     },
 
@@ -42,12 +48,12 @@ window.AFRAME.registerComponent('text2d', {
         let ctx = this.draw.ctx;
         const data = this.data;
         ctx.translate(0, data.paddingVertical);
-        const lineLength = this.lines.length;
+        const lineLength = this._lines.length;
         ctx.fillStyle = data.color;
-        let height = 0;
+        let height = this.getStartHeight();
 
         for (let i = 0; i < lineLength; i++) {
-            const line = this.lines[i];
+            const line = this._lines[i];
             ctx.font = `${line.fontSize}px ${data.fontFamily}`;
 
             switch (data.textAlign) {
@@ -74,6 +80,18 @@ window.AFRAME.registerComponent('text2d', {
                 break;
             }
             height += line.fontSize * 1.2;
+        }
+    },
+
+    getStartHeight() {
+        const align = this.data.verticalAlign;
+        switch (align) {
+        case 'top':
+            return 0;
+        case 'middle':
+            return (this.draw.canvas.height - this._height) * 0.5;
+        case 'bottom':
+            return this.draw.canvas.height - this._height;
         }
     }
 });

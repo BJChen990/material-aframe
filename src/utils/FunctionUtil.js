@@ -8,4 +8,16 @@ export default class FunctionUtil {
             !shallowEqual(instance.context, nextContext)
         );
     }
+
+    static listify(objectOrList) {
+        if (!objectOrList) {
+            return [];
+        }
+
+        if (!Array.isArray(objectOrList)) {
+            return [objectOrList];
+        }
+
+        return objectOrList;
+    }
 }

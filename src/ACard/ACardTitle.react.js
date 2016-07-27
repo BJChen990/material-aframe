@@ -12,6 +12,7 @@ const {
     TextBlockTextType
 } = Constants;
 
+const cardTitleCanvasPadding = CARD_TITLE_PADDING * PIXEL_TO_CANVAS_PIXEL;
 const titleFontSize = CARD_TITLE_TITLE_FONT_SIZE * PIXEL_TO_CANVAS_PIXEL;
 const subtitleFontSize = CARD_TITLE_SUBTITLE_FONT_SIZE * PIXEL_TO_CANVAS_PIXEL;
 
@@ -37,7 +38,6 @@ export default class ACardTitle extends React.Component {
 
     static preprocessComponent(component, width) {
         const {title, subtitle} = component.props;
-        const cardTitleCanvasPadding = CARD_TITLE_PADDING * PIXEL_TO_CANVAS_PIXEL;
         const textBlock = new TextBlock(
             TextUtil.getCanvas().getContext('2d'),
             width * 360,
@@ -70,7 +70,7 @@ export default class ACardTitle extends React.Component {
                 geometry={`primitive: plane; width: ${cardWidth}; height: ${height};`}
                 material={`color: ${this.context.cardBackgroundColor};`}
                 araisedcanvas={`width: ${cardWidth * 360}; height: ${height * 360};`}
-                text2d={`textJson: ${JSON.stringify(textJson)}; color: ${this.context.cardTextColor}`}
+                text2d={`textJson: ${JSON.stringify(textJson)}; color: ${this.context.cardTextColor}; paddingHorizontal: ${cardTitleCanvasPadding}; paddingVertical: ${cardTitleCanvasPadding}`}
                 {...others}
             />
         );

@@ -2,8 +2,8 @@ import React from 'react';
 import TextUtil from '../utils/TextUtil';
 import TextBlock from '../models/TextBlock';
 import Constants from '../constants';
-const CardTextPadding = Constants.CARD_TEXT_PADDING;
-const CardTextFontSize = Constants.CARD_TEXT_FONT_SIZE;
+const CardTextPadding = Constants.CARD_TEXT_PADDING * Constants.PIXEL_TO_CANVAS_PIXEL;
+const CardTextFontSize = Constants.CARD_TEXT_FONT_SIZE * Constants.PIXEL_TO_CANVAS_PIXEL;
 
 
 export default class ACardText extends React.Component {
@@ -26,14 +26,13 @@ export default class ACardText extends React.Component {
 
     static preprocessComponent(component, width) {
         const {children} = component.props;
-        const cardTextPadding = CardTextPadding * Constants.PIXEL_TO_CANVAS_PIXEL;
         const textBlock = new TextBlock(
             TextUtil.getCanvas().getContext('2d'),
             width * 360,
             {
-                verticalPadding: cardTextPadding,
-                horizontalPadding: cardTextPadding,
-                fontSize: CardTextFontSize * Constants.PIXEL_TO_CANVAS_PIXEL
+                verticalPadding: CardTextPadding,
+                horizontalPadding: CardTextPadding,
+                fontSize: CardTextFontSize
             }
         );
         textBlock.pushText(children, Constants.TextBlockTextType.NORMAL);
@@ -53,7 +52,7 @@ export default class ACardText extends React.Component {
                 geometry={`primitive: plane; width: ${cardWidth}; height: ${height};`}
                 material={`color: ${this.context.cardBackgroundColor};`}
                 araisedcanvas={`width: ${cardWidth * 360}; height: ${height * 360};`}
-                text2d={`textJson: ${JSON.stringify(textJson)}; color: ${this.context.cardTextColor}`}
+                text2d={`textJson: ${JSON.stringify(textJson)}; color: ${this.context.cardTextColor}; paddingHorizontal: ${CardTextPadding}; paddingVertical: ${CardTextPadding}`}
                 {...others}
             />
         );
